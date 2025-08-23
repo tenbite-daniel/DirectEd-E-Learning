@@ -3,6 +3,7 @@ import { useTheme } from "../../context/ThemeContext";
 import { Menu, Moon, Sun, User } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Logo from "../../assets/getstarted/logo.png";
 
 interface HeaderProps {
     onMenuClick: () => void;
@@ -24,8 +25,12 @@ export const Header = ({ onMenuClick }: HeaderProps) => {
                 >
                     <Menu size={24} />
                 </button>
-                <span className="text-xl font-bold text-blue-600">
-                    DirectEd
+                <span className="text-xl font-bol">
+                    <img
+                        src={Logo}
+                        alt="DirectEd Logo"
+                        className="w-32 h-10 brightness-0 mb-4 dark:brightness-100"
+                    />
                 </span>
             </div>
 
@@ -76,12 +81,20 @@ export const Header = ({ onMenuClick }: HeaderProps) => {
                         </div>
                     </div>
                 ) : (
-                    <Link
-                        to="/login"
-                        className="block px-4 py-2 bg-blue-600 w-full text-left"
-                    >
-                        Login
-                    </Link>
+                    <div className="w-full flex gap-4">
+                        <Link
+                            to="/login"
+                            className="block px-8 py-2 bg-gray-500 w-full text-left rounded-xl text-white"
+                        >
+                            Login
+                        </Link>
+                        <Link
+                            to="/signup"
+                            className="block px-8 py-2 bg-blue-600 w-full text-left whitespace-nowrap rounded-xl text-white"
+                        >
+                            Sign up
+                        </Link>
+                    </div>
                 )}
             </div>
         </header>
