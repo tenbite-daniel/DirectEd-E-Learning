@@ -3,23 +3,28 @@ import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
 
 interface LayoutProps {
-  children: ReactNode;
+    children: ReactNode;
 }
 
 export const Layout = ({ children }: LayoutProps) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
-        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+    return (
+        <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
+            <Sidebar
+                isOpen={sidebarOpen}
+                onClose={() => setSidebarOpen(false)}
+            />
 
-      {/* Main content wrapper */}
-      <div className="flex-1">
-        <Header
-          onMenuClick={() => setSidebarOpen((prev) => !prev)}
-        />
-        <main>{children}</main>
-      </div>
-    </div>
-  );
+            {/* Main content wrapper */}
+            <div className="flex-1">
+                <div className="fixed z-50">
+                    <Header
+                        onMenuClick={() => setSidebarOpen((prev) => !prev)}
+                    />
+                </div>
+                <main>{children}</main>
+            </div>
+        </div>
+    );
 };

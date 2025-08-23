@@ -15,8 +15,17 @@
       "@models/*": ["models/*"],
       "@utils/*": ["utils/*"]
     },
+    "types":["node"],
     "sourceMap": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "typeRoots": ["./node_modules/@types", "./types"]
   },
-  "include": ["src"]
+  "include": [
+    "src/**/*",
+    "types/**/*"
+  ],
+  "ts-node": {
+    "files": true,
+    "typeCheck": true
+  }
 }

@@ -63,13 +63,9 @@ function App() {
             <Route
                 path="/assistant"
                 element={
-                    <ProtectedRoute>
-                        <Layout>
-                            <VirtualAssistant
-                                context={{ page: "GeneralHelp" }}
-                            />
-                        </Layout>
-                    </ProtectedRoute>
+                    <Layout>
+                        <VirtualAssistant context={{ page: "GeneralHelp" }} />
+                    </Layout>
                 }
             />
         </Routes>
