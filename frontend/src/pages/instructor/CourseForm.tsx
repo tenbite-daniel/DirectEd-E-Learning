@@ -5,8 +5,8 @@ import {
     createCourse,
     updateCourse,
     fetchCourseById,
-} from "../api/instructorApi";
-import type { Lesson } from "../types/instructor";
+} from "../../api/instructorApi";
+import type { Lesson } from "../../types/instructor";
 import { Plus, Trash2, Save, Book } from "lucide-react";
 
 type CourseFormValues = {
@@ -70,7 +70,7 @@ const CourseForm: React.FC = () => {
         try {
             if (id) await updateCourse(id, data);
             else await createCourse(data);
-            navigate("/instructor/courses");
+            navigate("/instructor/my-courses");
         } catch (err) {
             console.error(err);
         }
@@ -86,7 +86,7 @@ const CourseForm: React.FC = () => {
         );
 
     return (
-        <div className="p-6 max-w-3xl mx-auto">
+        <div className="p-6 max-w-3xl mx-auto mt-24">
             <div className="flex items-center gap-2 mb-6">
                 <Book className="w-6 h-6 text-indigo-600" />
                 <h1 className="text-3xl font-bold">

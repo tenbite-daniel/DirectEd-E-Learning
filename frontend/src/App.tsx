@@ -18,8 +18,9 @@ import ForgetPasswordEmail from "./pages/forget-password/ForgetPasswordEmail";
 import VerifyOTP from "./pages/forget-password/VerifyOTP";
 import ResetPassword from "./pages/forget-password/ResetPassword";
 import { VirtualAssistant } from "./components/VirtualAssistant/VirtualAssistant";
-import Profile from "./pages/Profile";
+import Profile from "./pages/profile";
 import Courses from "./pages/instructor/Courses";
+import CourseForm from "./pages/instructor/CourseForm";
 
 function App() {
     return (
@@ -55,20 +56,81 @@ function App() {
                 }
             />
             <Route
-                path="/instructor/courses"
+                path="/instructor/my-courses"
                 element={
-                    <AuthProvider>
+                    <ProtectedRoute role="instructor">
                         <Layout>
                             <Courses />
                         </Layout>
-                    </AuthProvider>
+                    </ProtectedRoute>
                 }
             />
+            <Route
+                path="/instructor/courses/new"
+                element={
+                    <ProtectedRoute role="instructor">
+                        <Layout>
+                            <CourseForm />
+                        </Layout>
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route
+                path="/instructor/courses/:id"
+                element={
+                    <ProtectedRoute role="instructor">
+                        <Layout>
+                            <CourseForm />
+                        </Layout>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/courses"
+                element={
+                    <ProtectedRoute>
+                        <Layout>
+                            <BrowseCourses />
+                        </Layout>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/my-courses"
+                element={
+                    <ProtectedRoute role="student">
+                        <Layout>
+                            <BrowseCourses onlyEnrolled={true} />
+                        </Layout>
+                    </ProtectedRoute>
+                }
+            />
+
             <Route path="/quiz/:lessonId" element={<QuizPage />} />
 
             {/* Instructor Quiz Management */}
-            <Route path="/quiz" element={<CreateQuizPage />} />
-            <Route path="/view-quiz/:lessonId" element={<ViewQuizPage />} />
+            <Route
+                path="/quiz"
+                element={
+                    <ProtectedRoute>
+                        <Layout>
+                            <CreateQuizPage />
+                        </Layout>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/view-quiz/:lessonId"
+                element={
+                    <ProtectedRoute>
+                        <Layout>
+                            <ViewQuizPage />
+                        </Layout>
+                    </ProtectedRoute>
+                }
+            />
+
             <Route
                 path="/profile"
                 element={

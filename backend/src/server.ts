@@ -3,9 +3,9 @@ import express, { Request, Response } from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { errorMiddleware } from "./middleware/errorHandler";
-import quizRoutes from "./routes/quiz.routes"; // <-- import quizzes
-import quizAttemptRoutes from "./routes/quizAttempts";
-
+import quizRoutes from "./routes/quiz.routes";
+// import quizAttemptRoutes from "./routes/quizAttempts";
+import contentRoutes from "./routes/contentRoutes";
 import cors from "cors";
 import connectDB from "./config/db";
 import userRoutes from "./routes/user.routes";
@@ -30,7 +30,7 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api", userRoutes);
-// app.use("/api/quizzes", quizRoutes); // <-- register quiz routes
+app.use("/api/quizzes", quizRoutes);
 // app.use("/api/quiz-attempts", quizAttemptRoutes);
 
 // The global error handler middleware. It MUST be placed after all other routes
@@ -44,7 +44,7 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/instructor", instructorRoutes);
 app.use("/api/progress", progressRoutes);
 app.use("/api/testimonials", testimonialRoutes);
-
+app.use("/api/content", contentRoutes);
 // Connect to the database and then start the server
 mongoose
     .connect(MONGO_URI)

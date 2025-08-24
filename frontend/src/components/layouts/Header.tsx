@@ -89,7 +89,7 @@ export const Header = ({ onMenuClick }: HeaderProps) => {
                             Login
                         </Link>
                         <Link
-                            to="/signup"
+                            to="/onboarding"
                             className="block px-8 py-2 bg-blue-600 w-full text-left whitespace-nowrap rounded-xl text-white"
                         >
                             Sign up

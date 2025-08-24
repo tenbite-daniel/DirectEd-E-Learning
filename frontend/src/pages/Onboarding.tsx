@@ -10,9 +10,9 @@ import womenSit from "../assets/getstarted/student/womenSit.png";
 import grad from "../assets/getstarted/student/grad.png";
 import getStartedBg from "../assets/getstarted/getStarted-bg.jpg";
 import roleBg from "../assets/getstarted/role-bg.jpg";
-import cartoonAiRobot from "../assets/getStarted/instructor/cartoon-ai-robot.png";
-import plushyWomenWork from "../assets/getStarted/instructor/plushy-women-work.png";
-import teaching from "../assets/getStarted/instructor/teaching.png";
+import cartoonAiRobot from "../assets/getstarted/instructor/cartoon-ai-robot.png";
+import plushyWomenWork from "../assets/getstarted/instructor/plushy-women-work.png";
+import teaching from "../assets/getstarted/instructor/teaching.png";
 
 const onboardingSteps = [
     {

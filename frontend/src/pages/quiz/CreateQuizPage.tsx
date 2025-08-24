@@ -45,107 +45,153 @@ export const CreateQuizPage: React.FC = () => {
     };
 
     return (
-        <div className="max-w-3xl mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">Create Quiz</h1>
+        <div className="min-h-screen bg-gray-50 text-black mt-28">
+            <div className="max-w-3xl mx-auto p-6">
+                <h1 className="text-3xl font-bold mb-8 text-center">
+                    Create Quiz
+                </h1>
 
-            <input
-                className="border p-2 mb-2 w-full"
-                placeholder="Lesson ID"
-                value={quiz.lessonId}
-                onChange={(e) => setQuiz({ ...quiz, lessonId: e.target.value })}
-            />
+                <div className="space-y-6">
+                    {/* Quiz Details Section */}
+                    <div className="bg-gray-100 rounded-lg p-6">
+                        <h2 className="text-xl font-semibold mb-4">
+                            Quiz Details
+                        </h2>
 
-            <input
-                className="border p-2 mb-2 w-full"
-                placeholder="Quiz Title"
-                value={quiz.title}
-                onChange={(e) => setQuiz({ ...quiz, title: e.target.value })}
-            />
+                        <input
+                            className="w-full bg-gray-300 text-gray-900 border-none rounded-lg p-3 mb-4 placeholder-gray-600 focus:outline-none focus:ring-2"
+                            placeholder="Lesson ID"
+                            value={quiz.lessonId}
+                            onChange={(e) =>
+                                setQuiz({ ...quiz, lessonId: e.target.value })
+                            }
+                        />
 
-            {quiz.questions.map((q, idx) => (
-                <div key={idx} className="border p-3 mb-3 rounded">
-                    <input
-                        className="border p-2 mb-2 w-full"
-                        placeholder="Question text"
-                        value={q.text}
-                        onChange={(e) =>
-                            updateQuestion(idx, "text", e.target.value)
-                        }
-                    />
+                        <input
+                            className="w-full bg-gray-300 text-gray-900 border-none rounded-lg p-3 placeholder-gray-600 focus:outline-none focus:ring-2"
+                            placeholder="Quiz Title"
+                            value={quiz.title}
+                            onChange={(e) =>
+                                setQuiz({ ...quiz, title: e.target.value })
+                            }
+                        />
+                    </div>
 
-                    <select
-                        className="border p-2 mb-2 w-full"
-                        value={q.type}
-                        onChange={(e) =>
-                            updateQuestion(
-                                idx,
-                                "type",
-                                e.target.value as QuestionType
-                            )
-                        }
-                    >
-                        <option value="multiple-choice">Multiple Choice</option>
-                        <option value="true-false">True/False</option>
-                        <option value="short-answer">Short Answer</option>
-                    </select>
+                    {/* Questions Section */}
+                    {quiz.questions.map((q, idx) => (
+                        <div key={idx} className="bg-gray-50 rounded-lg p-6">
+                            <h3 className="text-lg font-semibold mb-4">
+                                Question {idx + 1}
+                            </h3>
 
-                    {q.type === "multiple-choice" && (
-                        <div>
-                            {q.options?.map((opt, optIdx) => (
-                                <input
-                                    key={optIdx}
-                                    className="border p-1 mb-1 w-full"
-                                    placeholder={`Option ${optIdx + 1}`}
-                                    value={opt}
-                                    onChange={(e) => {
-                                        const updated = [...quiz.questions];
-                                        updated[idx].options![optIdx] =
-                                            e.target.value;
-                                        setQuiz({
-                                            ...quiz,
-                                            questions: updated,
-                                        });
-                                    }}
-                                />
-                            ))}
-                            <button
-                                type="button"
-                                className="bg-gray-200 px-2 py-1 rounded"
-                                onClick={() => {
-                                    const updated = [...quiz.questions];
-                                    updated[idx].options!.push("");
-                                    setQuiz({ ...quiz, questions: updated });
-                                }}
+                            <input
+                                className="w-full bg-gray-300 text-gray-900 border-none rounded-lg p-3 mb-4 placeholder-gray-600 focus:outline-none focus:ring-2"
+                                placeholder="Write your Question Here"
+                                value={q.text}
+                                onChange={(e) =>
+                                    updateQuestion(idx, "text", e.target.value)
+                                }
+                            />
+
+                            <select
+                                className="w-full bg-gray-300 text-gray-900 border-none rounded-lg p-3 mb-4 focus:outline-none focus:ring-2"
+                                value={q.type}
+                                onChange={(e) =>
+                                    updateQuestion(
+                                        idx,
+                                        "type",
+                                        e.target.value as QuestionType
+                                    )
+                                }
                             >
-                                + Add Option
-                            </button>
+                                <option value="multiple-choice">
+                                    Multiple Choice
+                                </option>
+                                <option value="true-false">True/False</option>
+                                <option value="short-answer">
+                                    Short Answer
+                                </option>
+                            </select>
+
+                            {q.type === "multiple-choice" && (
+                                <div className="mb-4">
+                                    <h4 className="text-md font-medium mb-3">
+                                        Enter Choices
+                                    </h4>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        {q.options?.map((opt, optIdx) => (
+                                            <input
+                                                key={optIdx}
+                                                className="bg-gray-300 text-gray-900 border-none rounded-lg p-3 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                                placeholder={`Choice ${
+                                                    optIdx + 1
+                                                }`}
+                                                value={opt}
+                                                onChange={(e) => {
+                                                    const updated = [
+                                                        ...quiz.questions,
+                                                    ];
+                                                    updated[idx].options![
+                                                        optIdx
+                                                    ] = e.target.value;
+                                                    setQuiz({
+                                                        ...quiz,
+                                                        questions: updated,
+                                                    });
+                                                }}
+                                            />
+                                        ))}
+                                    </div>
+                                    <button
+                                        type="button"
+                                        className="mt-3 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors"
+                                        onClick={() => {
+                                            const updated = [...quiz.questions];
+                                            updated[idx].options!.push("");
+                                            setQuiz({
+                                                ...quiz,
+                                                questions: updated,
+                                            });
+                                        }}
+                                    >
+                                        + Add Choice
+                                    </button>
+                                </div>
+                            )}
+
+                            <input
+                                className="w-full bg-gray-300 text-gray-900 border-none rounded-lg p-3 placeholder-gray-600 focus:outline-none focus:ring-2"
+                                placeholder="Correct Answer"
+                                value={q.correctAnswer}
+                                onChange={(e) =>
+                                    updateQuestion(
+                                        idx,
+                                        "correctAnswer",
+                                        e.target.value
+                                    )
+                                }
+                            />
                         </div>
-                    )}
+                    ))}
 
-                    <input
-                        className="border p-2 mt-2 w-full"
-                        placeholder="Correct Answer"
-                        value={q.correctAnswer}
-                        onChange={(e) =>
-                            updateQuestion(idx, "correctAnswer", e.target.value)
-                        }
-                    />
+                    {/* Action Buttons */}
+                    <div className="flex justify-center space-x-4">
+                        <button
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                            onClick={addQuestion}
+                        >
+                            Add Question
+                        </button>
+
+                        <button
+                            className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                            onClick={handleSave}
+                        >
+                            Save Question
+                        </button>
+                    </div>
                 </div>
-            ))}
-
-            <button
-                className="bg-blue-500 text-white px-3 py-2 rounded mr-2"
-                onClick={addQuestion}
-            >
-                Add Question
-            </button>
-
-            <button
-                className="bg-green-500 text-white px-3 py-2 rounded"
-                onClick={handleSave}
-            >
-                Save Quiz
-            </button>
+            </div>
         </div>
     );
 };

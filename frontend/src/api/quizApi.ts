@@ -22,7 +22,10 @@ export const getQuizByLesson = async (lessonId: string): Promise<Quiz> => {
 
 // ✔ Accept NewQuiz (no IDs) and return Quiz (with IDs)
 export const createQuiz = async (payload: NewQuiz): Promise<Quiz> => {
-    const res = await api.post<Quiz>("/quizzes", payload);
+    const token = localStorage.getItem("token");
+    const res = await api.post<Quiz>("/quizzes", payload, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
     return res.data;
 };
 

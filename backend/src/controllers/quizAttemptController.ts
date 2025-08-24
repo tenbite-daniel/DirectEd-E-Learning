@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Types } from "mongoose";
+import mongoose from "mongoose";
 import Quiz from "../models/quiz.model";
 import QuizAttempt from "../models/QuizAttempt";
 import { SubmitQuizAttemptBody } from "../shared/Quiztypes";
@@ -12,8 +12,8 @@ export const submitQuizAttempt = async (
     try {
         const { quizId, userId, answers } = req.body;
 
-        // Convert quizId string to ObjectId
-        const quizObjectId = new Types.ObjectId(quizId);
+        // ✅ Correct
+        const quizObjectId = new mongoose.Types.ObjectId(quizId);
 
         // Fetch quiz
         const quiz = await Quiz.findById(quizObjectId);
@@ -48,13 +48,10 @@ export const submitQuizAttempt = async (
 // GET /api/quiz-attempts/:quizId
 export const getQuizAttempts = async (req: Request, res: Response) => {
     try {
-        const { quizId } = req.body; // or req.params
+        const { quizId } = req.params;
 
-        if (!quizId || !Types.ObjectId.isValid(quizId)) {
-            return res.status(400).json({ message: "Invalid quizId" });
-        }
-
-        const quizObjectId = Types.ObjectId(quizId); // <-- correct
+        // ✅ Correct
+        const quizObjectId = new mongoose.Types.ObjectId(quizId);
 
         const attempts = await QuizAttempt.find({ quizId: quizObjectId });
         res.json(attempts);

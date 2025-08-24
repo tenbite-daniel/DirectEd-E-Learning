@@ -1,5 +1,6 @@
 import React from "react";
 import DirectEdLogo from "../../assets/image.webp";
+import { Link } from "react-router-dom";
 
 interface FooterProps {
     fp1: string;
@@ -35,7 +36,7 @@ const Footer: React.FC<FooterProps> = ({
     fp2,
 }) => {
     return (
-        <footer className="w-full bg-amber-300 dark:bg-gray-800 text-gray-900 dark:text-white py-12">
+        <footer className="w-full bg-gray-300 dark:bg-gray-800 text-gray-900 dark:text-white py-12">
             {/* Top Section*/}
             <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
                 {/* First Colummn */}
@@ -43,7 +44,7 @@ const Footer: React.FC<FooterProps> = ({
                     <img
                         src={DirectEdLogo}
                         alt="DirectEd Logo"
-                        className="w-32 mb-4"
+                        className="w-32 mb-4 text-black"
                     />
                     <p className="text-sm font-semibold mb-4">{fp1}</p>
                 </div>
@@ -53,19 +54,28 @@ const Footer: React.FC<FooterProps> = ({
                     <h4 className="font-bold mb-3">{fTitle1}</h4>
                     <ul className="space-y-5">
                         <li>
-                            <a href="#" className="hover:opacity-35 transition">
+                            <Link
+                                to={"/login"}
+                                className="hover:opacity-35 transition"
+                            >
                                 {fLink1}
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="#" className="hover:opacity-35 transition">
+                            <Link
+                                to={"/login"}
+                                className="hover:opacity-35 transition"
+                            >
                                 {fLink2}
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="#" className="hover:opacity-35 transition">
+                            <Link
+                                to={"/login"}
+                                className="hover:opacity-35 transition"
+                            >
                                 {fLink3}
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </div>
