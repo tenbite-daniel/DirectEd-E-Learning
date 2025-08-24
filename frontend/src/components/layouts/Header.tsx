@@ -68,7 +68,7 @@ export const Header = ({ onMenuClick }: HeaderProps) => {
                                 to="/profile"
                                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                             >
-                                Profile
+                                profile
                             </Link>
 
                             {/* Show only Logout if logged in */}
@@ -86,13 +86,13 @@ export const Header = ({ onMenuClick }: HeaderProps) => {
                             to="/login"
                             className="block px-8 py-2 bg-gray-500 w-full text-left rounded-xl text-white"
                         >
-                            Login
+                            login
                         </Link>
                         <Link
                             to="/onboarding"
                             className="block px-8 py-2 bg-blue-600 w-full text-left whitespace-nowrap rounded-xl text-white"
                         >
-                            Sign up
+                            sign up
                         </Link>
                     </div>
                 )}
