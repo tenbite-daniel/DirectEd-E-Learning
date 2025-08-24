@@ -28,7 +28,7 @@ const Profile: React.FC = () => {
         const fetchProfile = async () => {
             try {
                 const res = await axios.get(
-                    "http://localhost:3500/api/profile",
+                    `${import.meta.env.VITE_API_URL}/api/profile`,
                     {
                         headers: { Authorization: `Bearer ${token}` },
                     }
@@ -52,7 +52,7 @@ const Profile: React.FC = () => {
         try {
             setLoading(true);
             const res = await axios.put(
-                "http://localhost:3500/api/profile",
+                `${import.meta.env.VITE_API_URL}/api/profile`,
                 { name, email },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -72,7 +72,7 @@ const Profile: React.FC = () => {
         try {
             setLoading(true);
             const res = await axios.post(
-                "http://localhost:3500/api/change-password",
+                `${import.meta.env.VITE_API_URL}/api/change-password`,
                 { oldPassword, newPassword },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
