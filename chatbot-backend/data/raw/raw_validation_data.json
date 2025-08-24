@@ -1,0 +1,42 @@
+[
+  {
+    "prompt": "You are a tutor for the Gen AI tech track. Explain the topic of Transformers within Curriculum in a clear, encouraging tone. End with a question to test the student's understanding.",
+    "completion": "Hello! Let's talk about Transformers in Curriculum. The Transformer architecture is a type of neural network that uses self-attention to weigh the importance of different parts of the input sequence. Why is this important for understanding long sentences?"
+  },
+  {
+    "prompt": "You are a tutor for the Gen AI tech track. Explain the topic of RAG within Curriculum in a clear, encouraging tone. End with a question to test the student's understanding.",
+    "completion": "Hello! Let's talk about RAG in Curriculum. RAG systems improve accuracy by letting the model access external knowledge bases, reducing the risk of making things up. How does this improve factual accuracy?"
+  },
+  {
+    "prompt": "You are an assessment creator for the Gen AI tech track. Create one quiz question for the topic of Transformers within Curriculum at a Intermediate difficulty level. Provide multiple-choice options and the correct answer.",
+    "completion": "Quiz: What mechanism allows a Transformer to weigh the importance of different words in a sentence? a) Convolutional layers b) Recurrent loops c) Attention d) Pooling. (Answer: c) Attention)"
+  },
+  {
+    "prompt": "You are an assessment creator for the Gen AI tech track. Create one quiz question for the topic of Transformers within Curriculum at a Beginner difficulty level. Provide multiple-choice options and the correct answer.",
+    "completion": "Quiz: What mechanism allows a Transformer to weigh the importance of different words in a sentence? a) Convolutional layers b) Recurrent loops c) Attention d) Pooling. (Answer: c) Attention)"
+  },
+  {
+    "prompt": "You are an assessment creator for the UI/UX tech track. Create one quiz question for the topic of Prototyping within Curriculum at a Advanced difficulty level. Provide multiple-choice options and the correct answer.",
+    "completion": "Quiz: A low-fidelity prototype is characterized by its: a) High-detail, interactive design b) Simplicity and use of paper sketches c) Final code and polished look d) Full database integration. (Answer: b) Simplicity and use of paper sketches)"
+  },
+  {
+    "prompt": "You are an assessment creator for the Gen AI tech track. Create one quiz question for the topic of Transformers within Curriculum at a Intermediate difficulty level. Provide multiple-choice options and the correct answer.",
+    "completion": "Quiz: What mechanism allows a Transformer to weigh the importance of different words in a sentence? a) Convolutional layers b) Recurrent loops c) Attention d) Pooling. (Answer: c) Attention)"
+  },
+  {
+    "prompt": "You are an assessment creator for the MERN tech track. Create one quiz question for the topic of Express Middleware within Curriculum at a Beginner difficulty level. Provide multiple-choice options and the correct answer.",
+    "completion": "Quiz: Middleware in Express.js is most often used for which of the following? a) Frontend rendering b) User authentication and logging c) Database configuration d) Styling webpages. (Answer: b) User authentication and logging)"
+  },
+  {
+    "prompt": "You are a tutor for the Gen AI tech track. Explain the topic of Prompt Engineering within Curriculum in a clear, encouraging tone. End with a question to test the student's understanding.",
+    "completion": "Hello! Let's talk about Prompt Engineering in Curriculum. Zero-shot prompting is when you ask a model a question without any examples. Few-shot prompting is when you provide a few examples to guide the model's response. What's the main benefit of few-shot prompting?"
+  },
+  {
+    "prompt": "You are an assessment creator for the UI/UX tech track. Create one quiz question for the topic of Accessibility (WCAG) within Curriculum at a Beginner difficulty level. Provide multiple-choice options and the correct answer.",
+    "completion": "Quiz: According to WCAG, which principle ensures users can interact with all UI components? a) Perceivable b) Operable c) Understandable d) Robust. (Answer: b) Operable)"
+  },
+  {
+    "prompt": "You are an assessment creator for the UI/UX tech track. Create one quiz question for the topic of Usability within Curriculum at a Intermediate difficulty level. Provide multiple-choice options and the correct answer.",
+    "completion": "Quiz: Which of the following best describes usability? a) How visually appealing a product is b) How quickly users can accomplish tasks with a product c) The speed of a website d) How many features a product has. (Answer: b) How quickly users can accomplish tasks with a product)"
+  }
+]
