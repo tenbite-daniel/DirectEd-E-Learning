@@ -6,8 +6,8 @@ export default function Dashboard() {
   return (
     <div>
       <h1>Welcome {user?.name}</h1>
-      <p>Your role: {user?.role}</p>
-      <p>JWT: {token}</p>
+      <p>Your role is : {user?.role}</p>
+      <p>JWT_token: {token}</p>
     </div>
   );
 }
