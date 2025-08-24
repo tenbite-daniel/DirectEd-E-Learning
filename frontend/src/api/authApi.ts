@@ -1,7 +1,6 @@
 import axiosInstance from "./axiosInstance";
 
 export const authApi = {
-    
     signup: (data: {
         name: string;
         email: string;
