@@ -3,7 +3,6 @@ import { type ChatMessage, type ChatContext } from "../../shared/chatTypes";
 import { MessageBubble } from "./MessageBubble";
 import { QuickActions } from "./QuickActions";
 import { TypingIndicator } from "./TypingIndicator";
-import { Header } from "../layouts/Header";
 import chatbotIcon from "../../assets/chatbot.png";
 
 export const VirtualAssistant: React.FC<{ context: ChatContext }> = () => {

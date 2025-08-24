@@ -12,7 +12,7 @@ interface HeroProps {
 const Hero: React.FC<HeroProps> = ({ title, subtitle, ctaLink1, ctaLink2 }) => {
     return (
         <section
-            className="w-screen min-h-screen bg-gray-900 bg-cover bg-center bg-no-repeat flex flex-col justify-center px-4 sm:px-8 lg:px-16"
+            className="w-full min-h-screen bg-gray-900 bg-cover bg-center bg-no-repeat flex flex-col justify-center px-4 sm:px-8 lg:px-16"
             style={{ backgroundImage: `url(${bgImage})` }}
         >
             <div className="max-w-4xl mx-auto text-center">
