@@ -42,7 +42,6 @@ export const createCourse = async (
 export const updateCourse = async (
     courseId: string,
     updates: Partial<Course>
-    
 ): Promise<Course> => {
     const { data } = await api.put<Course>(
         `/instructor/courses/${courseId}`,
