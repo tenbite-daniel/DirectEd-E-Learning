@@ -1,0 +1,671 @@
+[
+  {
+    "prompt": "You are a tutor for the Web Design track. Explain the importance of responsive design in a clear, supportive tone. End with a question to test the student's understanding.",
+    "completion": "Responsive design ensures that websites adapt to different screen sizes, like mobile phones, tablets, and desktops. This improves accessibility and user experience. Why is it important for a website to be mobile-friendly today?"
+  },
+  {
+    "prompt": "You are a tutor for the Web Development track. Explain the difference between front-end and back-end development in simple terms. End with a question.",
+    "completion": "Front-end development is about building the part of a website users see and interact with, like buttons, menus, and layouts. Back-end development handles data, servers, and business logic behind the scenes. Can you give an example of a task handled by the back-end?"
+  },
+  {
+    "prompt": "You are a tutor for the Generative AI track. Introduce the concept of prompt engineering in a motivating tone. End with a question.",
+    "completion": "Prompt engineering is the art of crafting the right instructions to guide an AI model’s output. By choosing words carefully, you can get more accurate, creative, or detailed responses. How do you think wording a prompt differently might affect the output?"
+  },
+  {
+    "prompt": "Explain to a beginner in the Web Design track why color theory matters in building websites. End with a question.",
+    "completion": "Color theory helps designers choose colors that look good together and convey the right emotions. For example, blue can create trust while red can show urgency. Why do you think consistent colors are important for brand identity?"
+  },
+  {
+    "prompt": "You are a Web Development tutor. Explain what HTML is in very simple terms. End with a question.",
+    "completion": "HTML is like the skeleton of a webpage. It uses tags to tell the browser what each part of the page is, like a heading, paragraph, or image. Can you name one tag you know in HTML?"
+  },
+  {
+    "prompt": "You are a Generative AI tutor. Explain the concept of fine-tuning in AI in clear words. End with a question.",
+    "completion": "Fine-tuning is when you take a pre-trained AI model and train it further on a smaller, specific dataset to make it better at a certain task. Why do you think fine-tuning is useful instead of training from scratch?"
+  },
+  {
+    "prompt": "You are a Web Design tutor. Explain what wireframes are and why they are useful. End with a question.",
+    "completion": "Wireframes are simple sketches or outlines of a webpage’s layout. They help designers plan structure and flow before adding colors or images. Why do you think planning with wireframes saves time?"
+  },
+  {
+    "prompt": "Explain in the Web Development track what CSS does for a website. End with a question.",
+    "completion": "CSS controls the look of a website, like colors, fonts, spacing, and layout. It separates style from structure, making sites more attractive and easier to maintain. What’s one visual change you can apply with CSS?"
+  },
+  {
+    "prompt": "You are a Generative AI tutor. Teach the idea of embeddings in a simple, clear tone. End with a question.",
+    "completion": "Embeddings are a way of turning words or data into numbers that represent meaning, so AI can understand and compare them. For example, ‘king’ and ‘queen’ are close in meaning, so their embeddings are close in number space. Why do you think embeddings are helpful for AI tasks?"
+  },
+  {
+    "prompt": "Explain to a Web Design learner why typography matters in websites. End with a question.",
+    "completion": "Typography is about the style, size, and arrangement of text. Good typography makes content easy to read and visually appealing. Why do you think headings need to stand out from regular text?"
+  },
+  {
+    "prompt": "You are a Web Development tutor. Explain what JavaScript does in websites. End with a question.",
+    "completion": "JavaScript makes websites interactive. It can create features like image sliders, form validation, and live updates without reloading the page. Can you think of a website feature that uses JavaScript?"
+  },
+  {
+    "prompt": "You are a Generative AI tutor. Explain what a Large Language Model (LLM) is in beginner-friendly terms. End with a question.",
+    "completion": "A Large Language Model is an AI trained on huge amounts of text so it can understand and generate human-like language. It predicts the next word in a sentence to produce responses. Why do you think training on a lot of data makes LLMs smarter?"
+  },
+  {
+    "prompt": "Teach Web Design learners why consistency in design is important. End with a question.",
+    "completion": "Consistency means using the same styles, fonts, and layouts across pages so users don’t get confused. It creates trust and professionalism. Why might users leave a site if it looks inconsistent?"
+  },
+  {
+    "prompt": "You are a Web Development tutor. Explain the role of APIs in web apps in a clear, supportive tone. End with a question.",
+    "completion": "APIs let different applications talk to each other. For example, a weather app might use an API to get real-time weather data. Can you think of a website that uses an external API?"
+  },
+  {
+    "prompt": "You are a Generative AI tutor. Explain the concept of hallucinations in AI in a clear, helpful tone. End with a question.",
+    "completion": "Hallucinations happen when AI confidently makes up information that isn’t true. It’s a known limitation and why techniques like RAG are important. Why do you think AI might ‘hallucinate’ instead of saying it doesn’t know?"
+  },
+  {
+    "prompt": "You are a Web Design tutor. Explain why whitespace (empty space) is important in layouts. End with a question.",
+    "completion": "Whitespace makes content easier to read and helps guide the user’s eye to important parts of the page. Why do you think too much text without spacing feels overwhelming?"
+  },
+  {
+    "prompt": "You are a Web Development tutor. Explain what a database is in simple terms. End with a question.",
+    "completion": "A database is like a digital filing cabinet that stores and organizes information for websites and apps. Why might a social media app need a database?"
+  },
+  {
+    "prompt": "You are a Generative AI tutor. Explain what RAG (Retrieval Augmented Generation) is in plain language. End with a question.",
+    "completion": "RAG combines an AI model with an external knowledge base so the AI can find the right info before answering. This reduces mistakes and makes answers more accurate. Why is it better for AI to pull facts from reliable sources?"
+  },
+  {
+    "prompt": "You are a Web Design tutor. Explain what accessibility in design means and why it matters. End with a question.",
+    "completion": "Accessibility means making websites usable for people with disabilities, like adding text for images or ensuring good color contrast. Why do you think accessibility is good for all users, not just those with disabilities?"
+  },
+  {
+    "prompt": "You are a Web Development tutor. Explain what version control (like Git) is and why developers use it. End with a question.",
+    "completion": "Version control tracks changes in code so developers can collaborate, undo mistakes, and manage project history. Why do you think version control is better than just saving files on your computer?"
+  },
+  {
+    "prompt": "You are a tutor for the Web Design track. Explain the importance of consistent color schemes in UI/UX design. End with a question to test the student's understanding.", 
+    "completion": "A consistent color scheme builds visual harmony, strengthens brand identity, and makes your site easier to navigate. Inconsistent colors can confuse users. What might happen if a website uses too many unrelated colors?"
+  },
+  {
+    "prompt": "You are a tutor for the Web Development track. Teach about REST APIs in a simple way. End with a question.", 
+    "completion": "REST APIs let two systems talk to each other using standard rules, often through HTTP requests like GET or POST. They’re essential for modern web apps. Can you give an example of when you’d use a REST API?"
+},
+{
+    "prompt": "You are a tutor for the Gen AI track. Explain the concept of prompt engineering to students. End with a question.", 
+    "completion": "Prompt engineering is about carefully designing the instructions you give to an AI so it produces better, more relevant answers. Small changes in wording can lead to very different results. Why do you think prompts matter so much in generative AI?"
+},
+{
+    "prompt": "You are a tutor for the Web Design track. Explain the role of typography in web design. End with a question.", 
+    "completion": "Typography affects readability, mood, and how professional your site looks. Choosing the right fonts and sizes helps users absorb information easily. What could go wrong if a designer uses too many different fonts?"
+},
+{
+    "prompt": "You are a tutor for the Web Development track. Explain the difference between frontend and backend development. End with a question.", 
+    "completion": "Frontend is what users see (HTML, CSS, JavaScript), while backend is the behind-the-scenes logic and data (databases, servers). Both sides must work together to build a full web app. Which side do you think handles storing user data?"
+},
+{
+    "prompt": "You are a tutor for the Gen AI track. Explain what fine-tuning an AI model means. End with a question.", 
+    "completion": "Fine-tuning means taking a general-purpose AI and training it further on specific data so it learns your context better. It’s like teaching a student extra material after school. Why might fine-tuning be useful for an e-learning chatbot?"
+},
+{
+    "prompt": "You are a tutor for the Web Design track. Explain what wireframes are and why they matter. End with a question.", 
+    "completion": "Wireframes are simple blueprints for a website, showing layout without focusing on colors or details. They help plan user flow before coding. What stage of a project do you think wireframes are most useful in?"
+},
+{
+    "prompt": "You are a tutor for the Web Development track. Explain what a database is in simple terms. End with a question.", 
+    "completion": "A database is like a digital filing cabinet where data is stored, organized, and retrieved. Websites use them to keep user accounts, posts, or transactions. What type of data do you think an online store would keep in its database?"
+},
+{
+    "prompt": "You are a tutor for the Gen AI track. Explain what embeddings are in AI. End with a question.", 
+    "completion": "Embeddings are a way to turn words, images, or data into numerical vectors that AI can understand and compare. They help AI find meaning and similarity. How might embeddings help a chatbot recommend relevant study resources?"
+},
+{
+    "prompt": "You are a tutor for the Web Design track. Explain the importance of white space in web design. End with a question.", 
+    "completion": "White space (or negative space) gives breathing room around elements, making content easier to read and preventing clutter. Why do you think websites with too little white space feel overwhelming?"
+},
+{
+    "prompt": "You are a tutor for the Web Development track. Explain what responsive design means. End with a question.", 
+    "completion": "Responsive design ensures a website adapts to different screen sizes, from phones to desktops, without breaking. Why is responsive design so critical in today’s world?"
+},
+{
+    "prompt": "You are a tutor for the Gen AI track. Explain the concept of hallucination in AI. End with a question.", 
+    "completion": "Hallucination is when AI makes up facts or gives incorrect answers confidently. This happens when it lacks context or external knowledge. How might RAG reduce AI hallucinations?"
+},
+{
+    "prompt": "You are a tutor for the Web Design track. Explain the role of contrast in accessibility. End with a question.",
+     "completion": "Strong contrast helps users with visual impairments read and interact with content more easily. Without it, text may become unreadable. What do you think happens if a website uses light gray text on a white background?"
+    },
+{
+    "prompt": "You are a tutor for the Web Development track. Explain what an API key is. End with a question.", 
+    "completion": "An API key is a unique identifier that allows apps to securely access an API. It works like a password for software systems. Why do you think it’s dangerous to expose an API key in your code?"
+},
+{
+    "prompt": "You are a tutor for the Gen AI track. Explain the difference between supervised and unsupervised learning. End with a question.", 
+    "completion": "Supervised learning uses labeled data (with correct answers), while unsupervised learning looks for hidden patterns in unlabeled data. Which type do you think clustering algorithms belong to?"
+},
+{
+    "prompt": "You are a tutor for the Web Design track. Explain what a style guide is in web design. End with a question.", 
+    "completion": "A style guide is a document that defines colors, fonts, and design rules for consistency across a site or brand. Why do you think teams benefit from having a style guide?" 
+},
+{
+    "prompt": "You are a tutor for the Web Development track. Explain what Git is and why it’s used. End with a question.",
+     "completion": "Git is a version control system that helps developers track changes, collaborate, and roll back code if needed. How could Git help a team working on the same project?"
+    },
+{
+    "prompt": "You are a tutor for the Gen AI track. Explain what a transformer model is. End with a question.", 
+    "completion": "Transformer models are a type of neural network architecture that powers modern AI like GPT. They excel at handling sequences of data, like text. Why do you think transformers are better than older models like RNNs for language tasks?"
+},
+{
+    "prompt": "You are a tutor for the Web Design track. Explain why navigation menus are important. End with a question.", 
+    "completion": "Navigation menus guide users to key pages easily, improving usability and reducing frustration. What problems could arise if a site has no clear navigation?"
+},
+{
+    "prompt": "You are a tutor for the Web Development track. Explain the difference between HTTP and HTTPS. End with a question.", 
+    "completion": "HTTP is the basic protocol for web communication, while HTTPS adds encryption for security. Why is HTTPS essential for websites that handle personal information?"
+},
+{
+    "prompt": "You are a tutor for the Gen AI track. Explain the difference between training and inference in AI. End with a question.", 
+    "completion": "Training is when the AI learns patterns from data, while inference is when it applies that learning to make predictions. Which stage do you interact with when chatting with an AI?"
+},
+{
+    "prompt": "You are a tutor for the Web Design track. Explain what a landing page is. End with a question.", 
+    "completion": "A landing page is a standalone web page designed for marketing or campaigns, often with a single call to action. What makes a good landing page effective?"
+},
+{
+    "prompt": "You are a tutor for the Web Development track. Explain what a framework is. End with a question.", 
+    "completion": "A framework provides pre-built tools and structure to speed up development, like Django for Python or React for JavaScript. Why might developers choose a framework instead of coding everything from scratch?"
+},
+{
+    "prompt": "You are a tutor for the Gen AI track. Explain what a large language model (LLM) is. End with a question.",
+     "completion": "An LLM is an AI trained on massive text data, capable of generating and understanding human-like language. Why are LLMs like GPT so versatile across different topics?"
+    },
+{
+    "prompt": "You are a tutor for the Web Design track. Explain what mobile-first design means. End with a question.", 
+    "completion": "Mobile-first design means creating for small screens first, then scaling up to larger ones. This ensures usability across devices. Why do you think this approach has become more common recently?"
+},
+{
+    "prompt": "You are a tutor for the Web Development track. Explain what a CDN is. End with a question.", 
+    "completion": "A Content Delivery Network stores copies of website files across servers worldwide to speed up loading. Why might a video streaming site rely on a CDN?"
+},
+{
+    "prompt": "You are a tutor for the Gen AI track. Explain what tokenization means in NLP. End with a question.",
+     "completion": "Tokenization is breaking text into smaller units, like words or subwords, so AI can process them. Why do you think tokenization is important before training a model?"
+    },
+{
+    "prompt": "You are a tutor for the Web Design track. Explain why accessibility is crucial in design. End with a question.", 
+    "completion": "Accessibility ensures that people with disabilities can use your website. It’s about inclusion and usability. What are some features that could make a site more accessible?"
+},
+{
+    "prompt": "You are a tutor for the Web Development track. Explain what cookies are. End with a question.", 
+    "completion": "Cookies are small pieces of data stored in the browser to remember user preferences or logins. What might be the risks of websites relying too heavily on cookies?"
+},
+{
+    "prompt": "You are a tutor for the Gen AI track. Explain what transfer learning is. End with a question.", 
+    "completion": "Transfer learning is when a model trained on one task is reused for another, saving time and resources. Why is transfer learning valuable in AI development?"
+},
+{
+    "prompt": "You are a tutor for the Web Design track. Explain the role of CTAs (Call to Actions). End with a question.", 
+    "completion": "CTAs are buttons or links that guide users toward an action, like signing up or buying. Why is wording so important in CTAs?"
+},
+{
+    "prompt": "You are a tutor for the Web Development track. Explain what caching is. End with a question.", 
+    "completion": "Caching stores data temporarily so pages load faster without repeating work. Why do you think caching improves both speed and user experience?"
+},
+{
+    "prompt": "You are a tutor for the Gen AI track. Explain the concept of attention in transformers. End with a question.", 
+    "completion": "Attention lets AI focus on the most relevant words in a sequence, improving accuracy. Why might attention be important when processing long sentences?"
+},
+{
+    "prompt": "You are a tutor for the Web Design track. Explain what a hero section is. End with a question.", 
+    "completion": "A hero section is the large banner at the top of a webpage that introduces the brand or key message. Why do you think the first impression of a hero section matters so much?"
+},
+{
+    "prompt": "You are a tutor for the Web Development track. Explain what CRUD operations are. End with a question.", 
+    "completion": "CRUD stands for Create, Read, Update, Delete—the four basic operations for managing data. Can you give an example of CRUD in a to-do list app?"
+},
+{
+    "prompt": "You are a tutor for the Gen AI track. Explain what RLHF (Reinforcement Learning from Human Feedback) is. End with a question.", 
+    "completion": "RLHF is a way to improve AI by having humans rate outputs, guiding the model toward more useful answers. Why do you think human feedback is so valuable in training AI?"
+},
+{
+    "prompt": "You are a tutor for the Web Design track. Explain why images must be optimized for the web. End with a question.",
+     "completion": "Optimized images load faster, improve SEO, and save bandwidth. Why might using huge, uncompressed images frustrate users?"
+    },
+{
+    "prompt": "You are a tutor for the Web Development track. Explain what middleware is in web frameworks. End with a question.", 
+    "completion": "Middleware is software that sits between requests and responses, handling tasks like authentication or logging. Why do you think middleware helps keep code clean?"
+},
+{
+    "prompt": "You are a tutor for the Gen AI track. Explain the role of datasets in AI training. End with a question.", 
+    "completion": "Datasets are the examples AI learns from. The quality and size of datasets directly affect performance. Why might biased datasets lead to biased AI models?"
+},
+  {
+    "prompt": "Teach Web Design learners why consistency in design is important. End with a question.",
+    "completion": "Consistency means using the same styles, fonts, and layouts across pages so users don’t get confused. It creates trust and professionalism. Why might users leave a site if it looks inconsistent?"
+  },
+  {
+    "prompt": "Explain to Web Design learners why white space is powerful. End with a question.",
+    "completion": "White space is the empty area around text or elements. It prevents clutter, makes content readable, and guides focus. How could too little white space affect readability?"
+  },
+  {
+    "prompt": "Explain to Web Design learners the role of typography in communication. End with a question.",
+    "completion": "Typography influences how messages are read and felt. Fonts can be formal, playful, or modern, shaping tone. Why is choosing the wrong font risky?"
+  },
+  {
+    "prompt": "Teach Web Design learners why responsive design is necessary. End with a question.",
+    "completion": "Responsive design ensures websites look good on phones, tablets, and desktops. It adapts layouts for better usability. What problems might occur if a site isn’t mobile-friendly?"
+  },
+  {
+    "prompt": "Explain to Web Design learners why accessibility matters in design. End with a question.",
+    "completion": "Accessibility ensures all users, including those with disabilities, can use a site. It improves inclusivity and usability. What might happen if designers ignore accessibility?"
+  },
+  {
+    "prompt": "Explain to Web Design learners why color contrast is important. End with a question.",
+    "completion": "Strong color contrast helps text and elements stand out, improving readability. Poor contrast makes content hard to see. How could low contrast affect users with vision issues?"
+  },
+  {
+    "prompt": "Teach Web Design learners why loading speed matters. End with a question.",
+    "completion": "Fast websites keep users engaged and improve SEO rankings. Slow sites often cause frustration and abandonment. Why would users leave a site that loads too slowly?"
+  },
+  {
+    "prompt": "Teach Web Design learners why navigation must be simple. End with a question.",
+    "completion": "Simple navigation helps users find what they need quickly. Complicated menus confuse visitors and increase bounce rates. What could happen if users can’t find what they want fast?"
+  },
+  {
+    "prompt": "Explain to Web Design learners why hierarchy matters in layouts. End with a question.",
+    "completion": "Hierarchy guides users’ eyes to the most important elements first. It creates structure and clarity in design. What confusion could arise if hierarchy is ignored?"
+  },
+  {
+    "prompt": "Teach Web Design learners why images must be optimized. End with a question.",
+    "completion": "Optimized images load faster and maintain quality, improving site performance. Large files slow pages down. Why is slow loading a problem for user experience?"
+  },
+  {
+  "prompt": "Teach Web Design learners why consistency in design is important. End with a question.",
+  "completion": "Consistency means using the same styles, fonts, and layouts across pages so users don’t get confused. It creates trust and professionalism. Why might users leave a site if it looks inconsistent?"
+},
+{
+  "prompt": "Explain to Gen AI learners why embeddings are essential in Retrieval-Augmented Generation (RAG). End with a question.",
+  "completion": "Embeddings turn text into numerical vectors that capture meaning. This lets the system find and match relevant knowledge efficiently. Without embeddings, retrieval wouldn’t be accurate. How do embeddings help the model find related content?"
+},
+{
+  "prompt": "Teach Cloud learners about the importance of auto-scaling. End with a question.",
+  "completion": "Auto-scaling allows cloud applications to automatically adjust resources based on demand. This saves cost and ensures performance during peak traffic. Why is auto-scaling better than fixed resource allocation?"
+},
+{
+  "prompt": "Explain to Cybersecurity learners what phishing is and why it’s dangerous. End with a question.",
+  "completion": "Phishing is a cyberattack where attackers trick people into giving up sensitive info through fake emails or sites. It’s dangerous because it can steal passwords, money, or personal data. How might you recognize a phishing attempt?"
+},
+{
+  "prompt": "Teach Data Science learners why data preprocessing is necessary before training models. End with a question.",
+  "completion": "Preprocessing cleans, transforms, and normalizes data so the model can learn effectively. Without it, errors or noise may reduce accuracy. What could happen if you train on messy data?"
+},
+{
+  "prompt": "Explain to Mobile App learners why responsive design is critical. End with a question.",
+  "completion": "Responsive design ensures apps and websites adapt to different screen sizes. This makes the user experience smooth on both phones and tablets. What problems might users face if an app isn’t responsive?"
+},
+{
+  "prompt": "Teach AI learners about hallucinations in large language models. End with a question.",
+  "completion": "Hallucinations happen when a model generates answers that sound correct but are factually wrong. It’s a key challenge in AI reliability. How does RAG help reduce hallucinations?"
+},
+{
+  "prompt": "Explain to Web learners why accessibility is a crucial aspect of design. End with a question.",
+  "completion": "Accessibility ensures that people with disabilities can use websites easily. It’s not just ethical but often legally required. What features make a website more accessible?"
+},
+{
+  "prompt": "Teach Cloud Computing learners about serverless architecture. End with a question.",
+  "completion": "Serverless means you don’t manage servers; you just deploy functions and pay for what you use. It simplifies scaling and reduces costs. Why might a startup choose serverless over traditional servers?"
+},
+{
+  "prompt": "Explain to Gen AI learners what vector databases are used for. End with a question.",
+  "completion": "Vector databases store and search embeddings efficiently, enabling RAG to find the most relevant information. They’re optimized for similarity search. Why can’t we just use normal databases for embeddings?"
+},
+{
+  "prompt": "Teach Cybersecurity learners about strong password practices. End with a question.",
+  "completion": "Strong passwords mix letters, numbers, and symbols to make them harder to crack. Using unique ones for each account prevents attackers from reusing stolen data. What could happen if you use the same password everywhere?"
+},
+{
+  "prompt": "Explain to Data Science learners why feature selection matters. End with a question.",
+  "completion": "Feature selection removes irrelevant or redundant data, improving accuracy and efficiency. Too many features can confuse the model. How does selecting the right features help reduce overfitting?"
+},
+{
+  "prompt": "Teach Web learners the importance of page speed optimization. End with a question.",
+  "completion": "Fast-loading pages improve user experience and boost search rankings. Slow pages frustrate visitors and increase bounce rates. Why might slow sites hurt business sales?"
+},
+{
+  "prompt": "Explain to Mobile App learners what push notifications are and their impact. End with a question.",
+  "completion": "Push notifications keep users engaged by sending timely updates. But too many can annoy users and cause uninstalls. What’s the balance between useful and spammy notifications?"
+},
+{
+  "prompt": "Teach AI learners about fine-tuning models. End with a question.",
+  "completion": "Fine-tuning means adapting a pre-trained model to a specific task or dataset. It makes the model more accurate in niche areas. Why might fine-tuning be better than training from scratch?"
+},
+{
+  "prompt": "Explain to Cybersecurity learners what two-factor authentication (2FA) is. End with a question.",
+  "completion": "2FA adds an extra security step, like a code on your phone, in addition to your password. It makes it much harder for attackers to break in. Why is 2FA stronger than just a password?"
+},
+{
+  "prompt": "Teach Cloud learners about Infrastructure as Code (IaC). End with a question.",
+  "completion": "IaC means managing servers and infrastructure through code instead of manual setup. It ensures consistency and makes deployments faster. Why might DevOps teams prefer IaC over manual configuration?"
+},
+{
+  "prompt": "Explain to Web Design learners why navigation menus matter. End with a question.",
+  "completion": "Navigation menus guide users to the right content quickly. Poor navigation frustrates visitors and drives them away. What happens when users can’t find what they’re looking for?"
+},
+{
+  "prompt": "Teach Data Science learners about overfitting. End with a question.",
+  "completion": "Overfitting happens when a model memorizes training data instead of generalizing. It performs well on training but poorly on new data. How can techniques like cross-validation help reduce overfitting?"
+},
+{
+  "prompt": "Explain to Gen AI learners why context windows are important in LLMs. End with a question.",
+  "completion": "The context window is how much text the model can consider at once. Larger windows allow for more detailed answers but require more resources. How might a small context window affect chatbot responses?"
+},
+  {
+    "prompt": "Explain to Web Design learners why call-to-action (CTA) buttons must stand out. End with a question.",
+    "completion": "CTA buttons guide users toward actions like signing up or buying. If they blend in, users may miss them. Why is it important to use contrasting colors for CTAs?"
+  },
+  {
+    "prompt": "Teach Web Design learners why minimalism often improves user experience. End with a question.",
+    "completion": "Minimalism reduces clutter and helps users focus on essential content. It creates cleaner, faster, and more accessible sites. How might too many elements on a page hurt conversions?"
+  },
+  {
+    "prompt": "Explain to Web Design learners the role of hierarchy in layouts. End with a question.",
+    "completion": "Hierarchy organizes content so users know what’s most important first. Designers use size, color, and placement to establish it. Why do you think headings should be larger than body text?"
+  },
+  {
+    "prompt": "Teach Web Design learners why mobile-first design is essential today. End with a question.",
+    "completion": "Since most users browse on mobile devices, designing mobile-first ensures accessibility and usability. It also helps scale up to desktops. What might happen if a site is only optimized for desktop?"
+  },
+  {
+    "prompt": "Explain to Web Design learners why alignment matters in layouts. End with a question.",
+    "completion": "Alignment creates order and structure, making content easier to scan and understand. Misalignment causes visual tension. How does alignment make a site look more professional?"
+  },
+  {
+    "prompt": "Teach Web Design learners about the importance of using grids. End with a question.",
+    "completion": "Grids provide structure and consistency, helping designers place elements logically. They also improve responsiveness. How can grids help balance text and images on a page?"
+  },
+  {
+    "prompt": "Explain to Web Design learners why using whitespace is not wasted space. End with a question.",
+    "completion": "Whitespace separates elements, improves readability, and gives designs room to breathe. It prevents overwhelming users. Why might a page with no whitespace feel stressful to browse?"
+  },
+  {
+    "prompt": "Teach Web Design learners why accessibility benefits everyone. End with a question.",
+    "completion": "Accessibility ensures that people with disabilities can use a site, but it also improves usability for all users. Isn’t it better if everyone can access your content equally?"
+  },
+  {
+    "prompt": "Explain to Web Design learners why contrast is critical in design. End with a question.",
+    "completion": "Contrast improves readability and highlights important elements by making them stand out. Poor contrast makes text hard to read. Why should body text always be high contrast against its background?"
+  },
+  {
+    "prompt": "Teach Web Design learners about the role of consistency in navigation. End with a question.",
+    "completion": "Users expect navigation to stay the same across pages. Consistent menus reduce confusion and build trust. How would users feel if navigation links kept changing location?"
+  },
+  {
+    "prompt": "Explain to Web Design learners why loading animations can improve UX. End with a question.",
+    "completion": "Animations show users that something is happening, reducing frustration during load times. They make waiting feel shorter. How might users react if nothing happens while they wait?"
+  },
+  {
+    "prompt": "Teach Web Design learners why images must be optimized. End with a question.",
+    "completion": "Large images slow down websites, while optimized ones load faster without losing quality. Faster sites improve SEO and user retention. Why might users leave a site that loads too slowly?"
+  },
+  {
+    "prompt": "Explain to Web Design learners why form design impacts conversions. End with a question.",
+    "completion": "Well-designed forms are simple, clear, and quick to complete. Complicated forms discourage users. Why do you think fewer fields usually mean higher completion rates?"
+  },
+  {
+    "prompt": "Teach Web Design learners about the importance of typography hierarchy. End with a question.",
+    "completion": "Typography hierarchy organizes text into headings, subheadings, and body copy, guiding the reader’s eye. Without it, text feels overwhelming. Why is it helpful for headings to stand out more than body text?"
+  },
+  {
+    "prompt": "Explain to Web Design learners why responsive typography matters. End with a question.",
+    "completion": "Responsive typography ensures text looks good across devices, adjusting size and spacing for readability. How might text designed only for desktop appear on a mobile screen?"
+  },
+  {
+    "prompt": "Teach Web Design learners why testing across browsers is necessary. End with a question.",
+    "completion": "Different browsers render code differently, so a design may break on some if not tested. Why is it risky to only test a site on one browser?"
+  },
+  {
+    "prompt": "Explain to Web Design learners why clear error messages matter. End with a question.",
+    "completion": "Good error messages guide users on how to fix mistakes instead of just pointing them out. How might vague errors like ‘Something went wrong’ frustrate users?"
+  },
+  {
+    "prompt": "Teach Web Design learners about the importance of feedback in interactions. End with a question.",
+    "completion": "When users click a button or submit a form, they expect feedback like loading states or confirmations. How might users feel if nothing happens after they click?"
+  },
+  {
+    "prompt": "Explain to Web Design learners why consistent branding is key. End with a question.",
+    "completion": "Brand consistency in colors, fonts, and style builds recognition and trust. Inconsistency can confuse users. Why might a brand lose credibility with inconsistent design?"
+  },
+  {
+    "prompt": "Teach Web Design learners why visual balance improves layouts. End with a question.",
+    "completion": "Balance distributes elements evenly so a page feels stable and pleasant. Poor balance feels awkward. How does visual balance help guide the user’s attention?"
+  },
+  {
+  "prompt": "Teach Web Design learners about the importance of responsive layouts. End with a question.",
+  "completion": "Responsive layouts adapt to different screen sizes so your site looks good on desktops, tablets, and phones. Why do you think mobile-first design is crucial today?"
+},
+{
+  "prompt": "Teach Web Design learners why typography matters in user experience. End with a question.",
+  "completion": "Typography affects readability and how users feel about your site. Using clear fonts improves accessibility and engagement. How would poor typography impact users?"
+},
+{
+  "prompt": "Teach Web Design learners about whitespace and why it matters. End with a question.",
+  "completion": "Whitespace helps content breathe and makes designs easier to read. It avoids clutter and gives focus to key elements. What might happen if a website has no whitespace?"
+},
+{
+  "prompt": "Teach Web Design learners the importance of fast load speeds. End with a question.",
+  "completion": "Fast websites keep users engaged and rank higher in search results. Slow loading causes frustration and high bounce rates. Why might speed be as important as visuals?"
+},
+{
+  "prompt": "Teach Web Design learners why accessibility is essential. End with a question.",
+  "completion": "Accessibility ensures people with disabilities can use your site. It improves inclusivity and meets global standards. What accessibility features could you add to a website?"
+},
+{
+  "prompt": "Teach Web Design learners about the importance of navigation menus. End with a question.",
+  "completion": "Clear navigation helps users find information quickly. Simple menus prevent confusion and improve experience. Why is it risky to hide important links too deep in menus?"
+},
+{
+  "prompt": "Teach Web Design learners why color contrast matters. End with a question.",
+  "completion": "Strong contrast makes text readable and supports accessibility. It also highlights important elements for users. What problems might arise if text blends into the background?"
+},
+{
+  "prompt": "Teach Web Design learners about call-to-action buttons. End with a question.",
+  "completion": "CTA buttons guide users to take action, like signing up or buying. Clear labels and good placement increase clicks. Why should CTAs stand out visually?"
+},
+{
+  "prompt": "Teach Web Design learners why visual hierarchy matters. End with a question.",
+  "completion": "Visual hierarchy guides the eye to important information first. Size, color, and positioning help prioritize content. How could poor hierarchy confuse users?"
+},
+{
+  "prompt": "Teach Web Design learners the role of grids in layouts. End with a question.",
+  "completion": "Grids bring structure and balance to web pages. They ensure alignment and improve readability. What would a website without a grid system feel like?"
+},
+{
+  "prompt": "Teach Web Design learners about consistent branding. End with a question.",
+  "completion": "Branding keeps your site recognizable through colors, logos, and style. Consistency builds trust with users. How might inconsistent branding harm a business?"
+},
+{
+  "prompt": "Teach Web Design learners the importance of testing designs. End with a question.",
+  "completion": "Testing ensures your design works across devices and browsers. It helps fix bugs and improve usability. Why should designers not rely only on their own screen?"
+},
+{
+  "prompt": "Teach Web Design learners about image optimization. End with a question.",
+  "completion": "Optimized images load faster while keeping good quality. This improves site speed and user experience. What might happen if you upload very large images?"
+},
+{
+  "prompt": "Teach Web Design learners about mobile navigation design. End with a question.",
+  "completion": "Mobile navigation should be simple, often using menus like hamburger icons. It keeps small screens user-friendly. Why is clutter worse on mobile than desktop?"
+},
+{
+  "prompt": "Teach Web Design learners why feedback matters in interactions. End with a question.",
+  "completion": "Feedback tells users that actions worked, like a button changing color when clicked. It prevents confusion. What might users feel if there is no feedback?"
+},
+{
+  "prompt": "Teach Web Design learners about alignment in design. End with a question.",
+  "completion": "Alignment makes content look organized and professional. It guides the user’s eyes across the page. How might poor alignment affect readability?"
+},
+{
+  "prompt": "Teach Web Design learners the importance of legible font sizes. End with a question.",
+  "completion": "Readable font sizes make content accessible on all devices. Too small fonts cause eye strain. What could happen if font sizes are inconsistent?"
+},
+{
+  "prompt": "Teach Web Design learners about form design principles. End with a question.",
+  "completion": "Forms should be simple, with clear labels and logical order. Good design improves completion rates. Why might long forms discourage users?"
+},
+{
+  "prompt": "Teach Web Design learners about consistent spacing. End with a question.",
+  "completion": "Spacing improves readability and keeps content neat. Consistency helps users focus on what matters. What happens when spacing feels random?"
+},
+{
+  "prompt": "Teach Web Design learners why user testing is important. End with a question.",
+  "completion": "User testing shows how real people interact with your design. It reveals issues designers may miss. Why is it risky to skip testing?"
+},
+{
+  "prompt": "Explain to AI learners what supervised learning is in an encouraging way. End with a question.",
+  "completion": "Supervised learning is when a model is trained using labeled data, meaning the input and the correct output are already known. This helps the model learn patterns. Can you give an example of labeled data?"
+},
+{
+  "prompt": "Introduce students to the concept of unsupervised learning. End with a question.",
+  "completion": "Unsupervised learning is when a model works with unlabeled data and tries to find hidden patterns or groupings. A common method is clustering. Can you think of when grouping data might be useful?"
+},
+{
+  "prompt": "Teach beginners about reinforcement learning in a simple tone. End with a question.",
+  "completion": "Reinforcement learning is when an agent learns by interacting with its environment, receiving rewards for good actions and penalties for bad ones. How is this similar to how humans learn new skills?"
+},
+{
+  "prompt": "Explain to students what a dataset is in the context of AI. End with a question.",
+  "completion": "A dataset is a collection of data, often organized into rows and columns, that we use to train and test AI models. Why is it important for a dataset to be clean and accurate?"
+},
+{
+  "prompt": "Introduce learners to the concept of training and testing data. End with a question.",
+  "completion": "Training data helps the model learn patterns, while testing data checks how well the model works on unseen information. Why shouldn’t we test a model using the same data it was trained on?"
+},
+{
+  "prompt": "Teach AI learners about overfitting in a friendly tone. End with a question.",
+  "completion": "Overfitting happens when a model memorizes training data too closely and struggles to handle new, unseen data. It’s like cramming for a test but forgetting everything after. What might help prevent overfitting?"
+},
+{
+  "prompt": "Explain underfitting in AI in a simple way. End with a question.",
+  "completion": "Underfitting occurs when a model is too simple and cannot capture the patterns in the data. It results in poor performance on both training and testing. Why do you think making a model too simple can hurt accuracy?"
+},
+{
+  "prompt": "Introduce the concept of bias in AI models. End with a question.",
+  "completion": "Bias in AI happens when the model produces results that unfairly favor or disadvantage certain groups, often due to skewed data. Why is it important to check datasets for bias before training?"
+},
+{
+  "prompt": "Teach learners about variance in AI models. End with a question.",
+  "completion": "Variance refers to how much a model’s predictions change with different training data. High variance usually means the model is too sensitive. What balance do we need between bias and variance?"
+},
+{
+  "prompt": "Explain the role of features in machine learning. End with a question.",
+  "completion": "Features are the input variables or characteristics used by a model to make predictions. For example, in predicting house prices, features could be size or location. Can you think of features for predicting student grades?"
+},
+{
+  "prompt": "Introduce students to labels in supervised learning. End with a question.",
+  "completion": "Labels are the correct answers the model tries to predict during training, like the price of a house in a dataset. Why are labels important in supervised learning?"
+},
+{
+  "prompt": "Explain neural networks in simple terms for beginners. End with a question.",
+  "completion": "Neural networks are inspired by how the human brain works. They have layers of connected nodes that process data step by step to make predictions. Why do you think multiple layers help solve complex problems?"
+},
+{
+  "prompt": "Teach learners about activation functions in a neural network. End with a question.",
+  "completion": "Activation functions decide whether a neuron in a neural network should be activated or not. They add non-linearity, helping the network learn complex things. Why might a network without activation functions fail?"
+},
+{
+  "prompt": "Explain to beginners what a model parameter is. End with a question.",
+  "completion": "Parameters are the values the model learns during training, like weights in a neural network. They guide how the model makes predictions. Why do you think adjusting parameters is important in training?"
+},
+{
+  "prompt": "Introduce students to hyperparameters in AI. End with a question.",
+  "completion": "Hyperparameters are settings chosen before training, like learning rate or number of layers in a network. They influence how the model learns. Why might choosing a bad hyperparameter slow down learning?"
+},
+{
+  "prompt": "Teach about the learning rate in model training. End with a question.",
+  "completion": "The learning rate controls how much the model updates its parameters with each step. Too high can overshoot, too low can be slow. Why is finding the right learning rate important?"
+},
+{
+  "prompt": "Explain epochs in training an AI model. End with a question.",
+  "completion": "An epoch is one full pass through the entire training dataset. Models are often trained for many epochs to learn properly. Why might training for too many epochs cause overfitting?"
+},
+{
+  "prompt": "Introduce learners to batch size in model training. End with a question.",
+  "completion": "Batch size is the number of samples the model processes before updating parameters. Small batches use less memory but take longer, while large batches are faster but need more power. Which do you think might generalize better?"
+},
+{
+  "prompt": "Teach beginners what a loss function is. End with a question.",
+  "completion": "A loss function measures how far the model’s predictions are from the actual results. The model tries to minimize this loss. Why is minimizing loss so important in training?"
+},
+{
+  "prompt": "Explain gradient descent in simple terms. End with a question.",
+  "completion": "Gradient descent is a method to update the model’s parameters by moving step by step in the direction that reduces the loss. It’s like walking downhill until you reach the lowest point. Why do you think smaller steps might sometimes be better?"
+},
+{
+  "prompt": "Introduce convolutional neural networks (CNNs) in simple terms. End with a question.",
+  "completion": "CNNs are special neural networks designed to handle images. They can detect patterns like edges and shapes automatically. Why do you think CNNs are good at tasks like image recognition?"
+},
+{
+  "prompt": "Explain recurrent neural networks (RNNs) to beginners. End with a question.",
+  "completion": "RNNs are neural networks that handle sequential data, like text or speech, by remembering previous inputs. Why is memory important when working with sentences or music?"
+},
+{
+  "prompt": "Teach students about transformers in AI. End with a question.",
+  "completion": "Transformers are advanced models that process data in parallel and use attention to focus on important parts of input. They’re the backbone of modern language models. Why do you think attention makes transformers powerful?"
+},
+{
+  "prompt": "Explain embeddings in AI to beginners. End with a question.",
+  "completion": "Embeddings turn words or items into number vectors so models can understand their meaning and relationships. For example, ‘king’ and ‘queen’ have related embeddings. Why is it useful for AI to capture word relationships?"
+},
+{
+  "prompt": "Introduce learners to tokenization in NLP. End with a question.",
+  "completion": "Tokenization is the process of splitting text into smaller pieces like words or subwords for the model to process. Why might subword tokenization be better than splitting only by words?"
+},
+{
+  "prompt": "Teach about attention mechanisms in AI. End with a question.",
+  "completion": "Attention lets the model focus on the most relevant parts of the input, like focusing on important words in a sentence. Why is focusing attention useful in understanding long texts?"
+},
+{
+  "prompt": "Explain sequence-to-sequence models to beginners. End with a question.",
+  "completion": "Seq2Seq models take an input sequence and produce an output sequence, like translating English to French. Why is handling sequence length important for these models?"
+},
+{
+  "prompt": "Introduce students to natural language generation (NLG). End with a question.",
+  "completion": "NLG is when AI creates human-like text from data or prompts. It’s used in chatbots and content creation. Why do you think generating coherent text is a challenge for AI?"
+},
+{
+  "prompt": "Teach learners about natural language understanding (NLU). End with a question.",
+  "completion": "NLU is about how AI interprets human language and extracts meaning, like detecting intent in a message. Why is understanding intent key for effective AI assistants?"
+},
+{
+  "prompt": "Explain to students the importance of preprocessing text in NLP. End with a question.",
+  "completion": "Preprocessing involves cleaning and preparing text, like removing punctuation or converting to lowercase, so the model can work better. Why might skipping preprocessing hurt accuracy?"
+},
+{
+  "prompt": "Introduce learners to stemming and lemmatization. End with a question.",
+  "completion": "Stemming cuts words to their base form, while lemmatization reduces them to the dictionary form. For example, ‘running’ → ‘run’. Why is this step useful in text analysis?"
+},
+{
+  "prompt": "Teach students about evaluation metrics in AI. End with a question.",
+  "completion": "Metrics like accuracy, precision, recall, and F1-score help measure how good a model is. Why might accuracy alone be misleading in an imbalanced dataset?"
+},
+{
+  "prompt": "Explain precision in classification. End with a question.",
+  "completion": "Precision tells us, of all the items predicted as positive, how many were actually correct. Why is high precision important in tasks like spam detection?"
+},
+{
+  "prompt": "Teach about recall in AI classification. End with a question.",
+  "completion": "Recall measures how many of the actual positives the model correctly identified. Why is recall important in medical diagnosis tasks?"
+},
+{
+  "prompt": "Introduce the F1-score to students. End with a question.",
+  "completion": "The F1-score combines precision and recall into a single number, giving a balanced measure of performance. Why might we prefer F1 over just accuracy?"
+},
+{
+  "prompt": "Explain confusion matrix in AI. End with a question.",
+  "completion": "A confusion matrix is a table that shows how many predictions were correct or wrong across categories. Why is it helpful to see errors in a matrix instead of just accuracy?"
+},
+{
+  "prompt": "Teach learners about cross-validation. End with a question.",
+  "completion": "Cross-validation splits data into parts to test the model on different subsets, helping check its reliability. Why does testing on multiple splits make results more trustworthy?"
+},
+{
+  "prompt": "Introduce the idea of transfer learning to students. End with a question.",
+  "completion": "Transfer learning uses a pre-trained model and fine-tunes it for a new task, saving time and resources. Why do you think using a pre-trained model is often better than starting from scratch?"
+}
+]
+

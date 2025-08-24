@@ -1,0 +1,29 @@
+# Python files
+__pycache__/
+*.pyc
+*.log
+
+# Git files
+.git/
+.gitignore
+*.vscode/
+
+.env
+
+# Ignores directories for data, models and testing
+data/
+db/
+finetuning/
+knowledge/
+tests/
+trial.ipynb
+
+# Ignores python and os files
+__pycache__/
+*.pyc
+*.log
+.DS_Store
+
+# Ignore git-related files
+.git/
+.gitignore

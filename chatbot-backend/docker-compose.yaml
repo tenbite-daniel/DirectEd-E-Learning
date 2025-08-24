@@ -1,0 +1,13 @@
+services:
+  directed-ed-api:
+    build: .
+    container_name: DirectEd-api
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./db:/app/db
+      - ./knowledge:/app/knowledge
+    command: ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+    restart: always
