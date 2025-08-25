@@ -10,6 +10,7 @@ const VerifyOTP: React.FC = () => {
 
     const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false); // loading state
     const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
     const handleChange = async (value: string, index: number) => {
@@ -44,11 +45,16 @@ const VerifyOTP: React.FC = () => {
         if (finalOtp.length !== 6) return setError("Please enter the full OTP");
 
         try {
-            await authApi.verifyOtp({ email, otp: finalOtp });
+            setLoading(true);
             setError("");
-            navigate("/reset-password", { state: { email, otp: finalOtp } });
+            await authApi.verifyOtp({ email, otp: finalOtp });
+            navigate("/reset-password-otp", {
+                state: { email, otp: finalOtp },
+            });
         } catch (err: any) {
             setError(err.response?.data?.message || "Invalid OTP");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -79,9 +85,14 @@ const VerifyOTP: React.FC = () => {
                 </div>
                 <button
                     onClick={() => handleVerify()}
-                    className="w-full bg-[#395241] text-white py-2 rounded-lg font-semibold hover:bg-[#2e4034] transition"
+                    disabled={loading}
+                    className={`w-full py-2 rounded-lg font-semibold transition ${
+                        loading
+                            ? "bg-gray-400 cursor-not-allowed text-gray-200"
+                            : "bg-[#395241] text-white hover:bg-[#2e4034]"
+                    }`}
                 >
-                    Verify OTP
+                    {loading ? "Verifying..." : "Verify OTP"}
                 </button>
                 {error && (
                     <p className="text-red-500 text-center mt-4 font-medium">

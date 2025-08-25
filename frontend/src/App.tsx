@@ -1,5 +1,5 @@
 import { Layout } from "./components/layouts/Layout";
-import LessonPlayer from "./components/modules/LessonPlayer";
+// import LessonPlayer from "./components/modules/LessonPlayer";
 import { Routes, Route } from "react-router-dom";
 import { Login } from "./pages/LoginPage";
 import { Signup } from "./pages/SignupPage";
@@ -10,7 +10,6 @@ import QuizPage from "./components/QuizPage";
 import CreateQuizPage from "./pages/quiz/CreateQuizPage";
 import ViewQuizPage from "./pages/quiz/ViewQuizPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import { AuthProvider } from "./context/AuthProvider";
 import BrowseCourses from "./pages/BrowseCourses";
 import Onboarding from "./pages/Onboarding";
 import HomePage from "./pages/HomePage";
@@ -32,7 +31,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/forgot-password" element={<ForgetPasswordEmail />} />
             <Route path="/verify-otp" element={<VerifyOTP />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/reset-password-otp" element={<ResetPassword />} />
 
             {/* Protected route example */}
             <Route
@@ -149,6 +148,16 @@ function App() {
                             <VirtualAssistant
                                 context={{ page: "GeneralHelp" }}
                             />
+                        </Layout>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/reset-password"
+                element={
+                    <ProtectedRoute>
+                        <Layout>
+                            <ChangePassword />
                         </Layout>
                     </ProtectedRoute>
                 }

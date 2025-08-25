@@ -10,6 +10,9 @@ export const ChangePassword: React.FC = () => {
     });
     const [message, setMessage] = useState<string | null>(null);
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const token = localStorage.getItem("token"); // ✅ token for auth
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -18,25 +21,31 @@ export const ChangePassword: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (!token) {
+            setMessage("You must be logged in to change your password.");
+            setIsSuccess(false);
+            return;
+        }
+
         setMessage(null);
         setIsSuccess(false);
+        setLoading(true);
 
         try {
-            // ✅ Use authApi for changing password
-            await authApi.changePassword({
-                oldPassword: form.oldPassword,
-                newPassword: form.newPassword,
-            });
+            // ✅ Send token with request
+            await authApi.changePassword(form, token);
 
             setMessage("Password updated successfully!");
             setIsSuccess(true);
-            setForm({ oldPassword: "", newPassword: "" }); // Clear the form
+            setForm({ oldPassword: "", newPassword: "" });
         } catch (err) {
             const axiosError = err as AxiosError<{ message?: string }>;
             setMessage(
                 axiosError.response?.data?.message ?? "Error updating password"
             );
             setIsSuccess(false);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -67,9 +76,14 @@ export const ChangePassword: React.FC = () => {
                     />
                     <button
                         type="submit"
-                        className="w-full rounded-md bg-indigo-600 p-3 font-semibold text-white transition duration-200 ease-in-out hover:bg-indigo-700"
+                        disabled={loading}
+                        className={`w-full rounded-md p-3 font-semibold text-white transition duration-200 ease-in-out ${
+                            loading
+                                ? "bg-indigo-400 cursor-not-allowed"
+                                : "bg-indigo-600 hover:bg-indigo-700"
+                        }`}
                     >
-                        Change the Password
+                        {loading ? "Updating..." : "Change Password"}
                     </button>
                 </form>
 

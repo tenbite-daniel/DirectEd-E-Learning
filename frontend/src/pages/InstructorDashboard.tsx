@@ -18,176 +18,124 @@ const InstructorDashboard: React.FC = () => {
             .catch(() => setLoading(false));
     }, []);
 
-    if (loading) return <p className="p-6">Loading...</p>;
-    if (!data) return <p className="p-6 text-red-500">Failed to load data.</p>;
+    if (loading)
+        return (
+            <p className="p-6 text-center text-gray-700 dark:text-gray-200">
+                Loading...
+            </p>
+        );
+    if (!data)
+        return (
+            <p className="p-6 text-center text-red-500">Failed to load data.</p>
+        );
 
     return (
-        <div className="pt-28">
-            <h1 className="text-3xl font-bold mb-6 text-center dark:text-white">
-                Welcome back
+        <div className="pt-24 px-4 md:px-8 bg-gray-50 dark:bg-gray-900 min-h-screen">
+            <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center text-gray-800 dark:text-white">
+                Welcome Back
             </h1>
 
             {/* Metrics Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                <Link to={"/instructor/courses"}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                <Link to="/instructor/courses">
                     <MetricsCard
                         title="Total Courses"
                         value={data.totalCourses}
-                        icon={<BookOpen />}
+                        icon={<BookOpen className="text-[#395241]" />}
                     />
                 </Link>
-                <Link to={"/instructor/:id/students"}>
+                <Link to="/instructor/:id/students">
                     <MetricsCard
                         title="Total Students"
-                        value={data.totalStudents}
-                        icon={<Users />}
-                    />
-                </Link>
-                <Link to={"/"}>
-                    <MetricsCard
-                        title="Course Progress"
-                        value={`$${data.totalRevenue}`}
-                        icon={<Badge />}
+                        value={3}
+                        icon={<Users className="text-[#395241]" />}
                     />
                 </Link>
             </div>
 
-            <div className="text-gray-900 dark:text-white pt-11 pb-5 text-2xl font-bold text-center">
-                <h1>Overview</h1>
+            {/* Overview Section */}
+            <div className="text-gray-900 dark:text-white text-2xl font-bold text-center mb-6">
+                Overview
             </div>
 
-            <div className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Assessments Card */}
-                    <div className="bg-yellow-100 dark:bg-gray-700 rounded-xl p-6 shadow-md">
-                        <h2 className="text-xl font-bold mb-4 dark:text-white">
-                            Assessments
-                        </h2>
-                        <div className="flex items-center mb-4">
-                            <span className="mr-2 font-medium dark:text-white">
-                                29 submitted
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                {/* Assessments Card */}
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow hover:shadow-lg transition">
+                    <h2 className="text-xl font-bold mb-4 dark:text-white">
+                        Assessments
+                    </h2>
+                    <div className="flex items-center mb-4">
+                        <span className="mr-2 font-medium dark:text-white">
+                            3 submitted
+                        </span>
+                        <div className="flex-1 bg-gray-300 rounded-full h-2 relative">
+                            <div
+                                className="bg-[#395241] h-2 rounded-full transition-all duration-300"
+                                style={{ width: `${100}%` }}
+                            />
+                        </div>
+                        <span className="ml-2 font-medium dark:text-white">
+                            0 left
+                        </span>
+                    </div>
+                </div>
+
+                {/* Top Learners Card */}
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow hover:shadow-lg transition">
+                    <h2 className="text-xl font-bold mb-4 dark:text-white">
+                        Top Learners
+                    </h2>
+                    <ul className="space-y-2 mb-4">
+                        <li className="flex justify-between items-center">
+                            <span className="dark:text-white">1. John Doe</span>
+                            <span className="text-green-500 font-semibold">
+                                83 pts
                             </span>
-                            <div className="flex-1 bg-gray-300 rounded-full h-2 relative">
-                                <div
-                                    className="bg-yellow-600 h-2 rounded-full"
-                                    style={{
-                                        width: `${(29 / (29 + 8)) * 100}%`,
-                                    }}
-                                ></div>
-                            </div>
-                            <span className="ml-2 font-medium dark:text-white">
-                                8 left
+                        </li>
+                        <li className="flex justify-between items-center">
+                            <span className="dark:text-white">
+                                2. Jane Smith
                             </span>
-                        </div>
-                        <button className="bg-yellow-700 text-white px-4 py-2 rounded-md hover:bg-yellow-800">
-                            See All Assignments
-                        </button>
-                    </div>
+                            <span className="text-gray-400 font-semibold">
+                                77 pts
+                            </span>
+                        </li>
+                        <li className="flex justify-between items-center">
+                            <span className="dark:text-white">
+                                3. Alex Johnson
+                            </span>
+                            <span className="text-yellow-600 font-semibold">
+                                74 pts
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-                    {/* Top Learners Card */}
-                    <div className="bg-yellow-100 dark:bg-gray-700 rounded-xl p-6 shadow-md">
-                        <h2 className="text-xl font-bold mb-4 dark:text-white">
-                            Top Learners
-                        </h2>
-                        <ul className="space-y-2 mb-4">
-                            <li className="flex justify-between items-center">
-                                <span className="dark:text-white">
-                                    1. Mayweather Beckham
-                                </span>
-                                <span className="text-yellow-500 font-semibold">
-                                    72pts
-                                </span>
-                            </li>
-                            <li className="flex justify-between items-center">
-                                <span className="dark:text-white">
-                                    2. Mary Anna
-                                </span>
-                                <span className="text-gray-400 font-semibold">
-                                    67pts
-                                </span>
-                            </li>
-                            <li className="flex justify-between items-center">
-                                <span className="dark:text-white">
-                                    3. Noise Talerman
-                                </span>
-                                <span className="text-yellow-800 font-semibold">
-                                    59pts
-                                </span>
-                            </li>
-                        </ul>
-                        <button className="bg-yellow-700 text-white px-4 py-2 rounded-md hover:bg-yellow-800 dark:text-white">
-                            See All Learners
-                        </button>
-                    </div>
-
-                    {/* My Schedule Card */}
-                    <div className="bg-yellow-100 dark:bg-gray-700 rounded-xl p-6 shadow-md">
-                        <h2 className="text-xl font-bold mb-4 dark:text-white">
-                            My Schedule
-                        </h2>
-                        <div className="flex space-x-2 mb-4">
-                            {[
-                                "Mo 17",
-                                "Tu 18",
-                                "We 19",
-                                "Th 20",
-                                "Fr 21",
-                                "Sa 22",
-                            ].map((day, i) => (
-                                <div
-                                    key={i}
-                                    className={`px-3 py-1 rounded border ${
-                                        day === "We 19"
-                                            ? "bg-black text-white"
-                                            : "bg-yellow-200"
-                                    }`}
-                                >
-                                    {day}
-                                </div>
-                            ))}
-                        </div>
-                        <ul className="space-y-2 text-gray-700">
-                            <li className="dark:text-white">
-                                Web Development - Introduction to TypeScript
-                            </li>
-                            <li className="dark:text-white">
-                                10:15AM - 12:45PM
-                            </li>
-                            <li className="dark:text-white">
-                                Assignment Grading: 2:00PM - 2:40PM
-                            </li>
-                            <li className="dark:text-white">
-                                Assignment Review: 3:50PM - 4:50PM
-                            </li>
-                        </ul>
-                    </div>
-
-                    {/*Uploads card */}
-                    <div className="bg-yellow-100 dark:bg-gray-700 rounded-2xl p-6 shadow-md flex flex-col items-center justify-center">
-                        <h2 className="text-3xl font-bold mb-6 dark:text-white tracking-wide">
-                            Uploads
-                        </h2>
-                        <div className="space-y-4 w-full px-4">
-                            <Link
-                                to={"/upload/video"}
-                                className="bg-[#c27c26] text-[#fcf8e8] w-full py-3 px-6 rounded-xl hover:bg-[#a96b20] transition-colors duration-200 text-lg font-semibold text-center block shadow-lg transform hover:scale-105"
-                            >
-                                Upload Video
-                            </Link>
-                            <Link
-                                to={"/upload/file"}
-                                className="bg-[#c27c26] text-[#fcf8e8] w-full py-3 px-6 rounded-xl hover:bg-[#a96b20] transition-colors duration-200 text-lg font-semibold text-center block shadow-lg transform hover:scale-105"
-                            >
-                                Upload Files
-                            </Link>
-                            <Link
-                                to={"/quiz"}
-                                className="bg-[#c27c26] text-[#fcf8e8] w-full py-3 px-6 rounded-xl hover:bg-[#a96b20] transition-colors duration-200 text-lg font-semibold text-center block shadow-lg transform hover:scale-105"
-                            >
-                                Create Quiz
-                            </Link>
-                        </div>
-                    </div>
+            {/* Quick Links Section */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-md mb-10">
+                <h2 className="text-3xl font-bold mb-6 text-center dark:text-white">
+                    Quick Links
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <Link
+                        to="/instructor/courses/new"
+                        className="bg-[#395241] text-white py-3 px-6 rounded-xl text-center font-semibold hover:bg-[#2e4034] transition shadow-md transform hover:scale-105"
+                    >
+                        Create Course
+                    </Link>
+                    <Link
+                        to="/instructor/my-courses"
+                        className="bg-[#395241] text-white py-3 px-6 rounded-xl text-center font-semibold hover:bg-[#2e4034] transition shadow-md transform hover:scale-105"
+                    >
+                        My Courses
+                    </Link>
+                    <Link
+                        to="/quiz"
+                        className="bg-[#395241] text-white py-3 px-6 rounded-xl text-center font-semibold hover:bg-[#2e4034] transition shadow-md transform hover:scale-105"
+                    >
+                        Create Quiz
+                    </Link>
                 </div>
             </div>
         </div>
