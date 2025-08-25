@@ -4,7 +4,7 @@ import { type ChatMessage, type ChatContext } from "../../shared/chatTypes";
 import chatbotIcon from "../../assets/chatbot.png";
 
 // Define the API endpoint for your FastAPI backend
-const API_URL = "https://directed-e-learning.onrender.com";
+const API_URL = "https://directed-e-va.onrender.com";
 
 // -----------------------------------------------------------
 // Component Props and Definitions
