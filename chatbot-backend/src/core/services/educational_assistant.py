@@ -123,20 +123,35 @@ class ContentGenerator:
 
     def answer_generator(self, request_text: str) -> str:
         """
-        Short text answer generator. If an LLM is available, this should call it.
-        For now: deterministic fallback that echoes and offers an example.
+        Short text answer generator.
+        - Uses retriever if available
+        - Uses LLM if available
+        - Falls back to a deterministic response otherwise
         """
-        if self.llm is not None:
-            # Placeholder: future LLM call e.g., self.llm.generate(...)
+        # 1. Try retriever
+        if self.retriever is not None:
             try:
-                # If your LLM client has a sync method, call it here; otherwise adapt as needed.
-                return self.llm.generate(request_text)
+                docs = self.retriever.get_documents(request_text)
+                if docs:
+                    return docs
             except Exception:
-                # Fall through to simple answer below
                 pass
 
-        # Deterministic fallback
-        return f"Short explanation for: '{request_text}'.\nExample: This is a concise example describing {request_text}."
+        # 2. Try LLM
+        if self.llm is not None:
+            try:
+                # For ChatGroq / LangChain, `invoke` is the modern method
+                response = self.llm.invoke(request_text)
+                if hasattr(response, "content"):
+                    return response.content
+                if isinstance(response, str):
+                    return response
+                return str(response)
+            except Exception as e:
+                return f"[LLM error: {e}]"
+
+        # 3. Fallback deterministic text
+        return f"Sorry, I couldn’t generate an explanation for '{request_text}'."
 
     # ------------------------
     # Internal deterministic helpers

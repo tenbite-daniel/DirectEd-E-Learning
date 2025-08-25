@@ -10,7 +10,7 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     user_type: str = Field(..., description="The type of user (Student or Instructor).")
     content_type: str = Field(..., description="The type of content generated (TUTORING or QUIZ).")
-    output: str = Field(..., description="The generated educational content.")
+    output: Dict[str, Any] = Field(..., description="The generated educational content.")
     updated_profile: Dict[str, Any] = Field(..., description="The updated learning profile of the user.")
 
 class ContentGenerateRequest(BaseModel):

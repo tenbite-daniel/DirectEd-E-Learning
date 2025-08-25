@@ -109,7 +109,7 @@ export const VirtualAssistant: React.FC<{ context: ChatContext }> = () => {
     const fetchAssistantResponse = async (userMessage: string) => {
         setIsTyping(true);
         try {
-            const response = await fetch(`${API_URL}/api/assistant/chat`, {
+            const response = await fetch('http://localhost:8000/api/assistant/chat', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -130,7 +130,7 @@ export const VirtualAssistant: React.FC<{ context: ChatContext }> = () => {
             const assistantMessage: ChatMessage = {
                 id: crypto.randomUUID(),
                 sender: "assistant",
-                text: data.output, 
+                text: data.output.text, 
                 timestamp: new Date().toISOString(),
             };
             setMessages((prevMessages) => [...prevMessages, assistantMessage]);
