@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import mongoose from "mongoose";
 import Quiz from "../models/quiz.model";
 import QuizAttempt from "../models/QuizAttempt";
 import { SubmitQuizAttemptBody } from "../shared/Quiztypes";
@@ -11,8 +12,11 @@ export const submitQuizAttempt = async (
     try {
         const { quizId, userId, answers } = req.body;
 
-        // Fetch quiz directly with string ID
-        const quiz = await Quiz.findById(quizId);
+        // ✅ Correct
+        const quizObjectId = new mongoose.Types.ObjectId(quizId);
+
+        // Fetch quiz
+        const quiz = await Quiz.findById(quizObjectId);
         if (!quiz) return res.status(404).json({ message: "Quiz not found" });
 
         // Calculate score
@@ -26,7 +30,7 @@ export const submitQuizAttempt = async (
 
         // Save attempt
         const newAttempt = new QuizAttempt({
-            quizId, // string is fine
+            quizId: quizObjectId,
             userId,
             answers,
             score,
@@ -46,8 +50,10 @@ export const getQuizAttempts = async (req: Request, res: Response) => {
     try {
         const { quizId } = req.params;
 
-        // Query directly using string ID
-        const attempts = await QuizAttempt.find({ quizId });
+        // ✅ Correct
+        const quizObjectId = new mongoose.Types.ObjectId(quizId);
+
+        const attempts = await QuizAttempt.find({ quizId: quizObjectId });
         res.json(attempts);
     } catch (error) {
         console.error(error);

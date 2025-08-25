@@ -1,21 +1,26 @@
 import { Layout } from "./components/layouts/Layout";
-// import Home from "./pages/HomePage";
-// import LessonPlayer from "./components/modules/LessonPlayer";
+import LessonPlayer from "./components/modules/LessonPlayer";
 import { Routes, Route } from "react-router-dom";
 import { Login } from "./pages/LoginPage";
 import { Signup } from "./pages/SignupPage";
 import StudentDashboard from "./pages/StudentDashboard";
 import InstructorDashboard from "./pages/InstructorDashboard";
 import { ChangePassword } from "./pages/ChangePasswordPage";
-// import QuizPage from "./components/QuizPage";
+import QuizPage from "./components/QuizPage";
+import CreateQuizPage from "./pages/quiz/CreateQuizPage";
+import ViewQuizPage from "./pages/quiz/ViewQuizPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
-// import BrowseCourses from "./pages/BrowseCourses";
+import { AuthProvider } from "./context/AuthProvider";
+import BrowseCourses from "./pages/BrowseCourses";
 import Onboarding from "./pages/Onboarding";
 import HomePage from "./pages/HomePage";
 import ForgetPasswordEmail from "./pages/forget-password/ForgetPasswordEmail";
 import VerifyOTP from "./pages/forget-password/VerifyOTP";
 import ResetPassword from "./pages/forget-password/ResetPassword";
 import { VirtualAssistant } from "./components/VirtualAssistant/VirtualAssistant";
+import Profile from "./pages/profile";
+import Courses from "./pages/instructor/Courses";
+import CourseForm from "./pages/instructor/CourseForm";
 
 function App() {
     return (
@@ -51,11 +56,87 @@ function App() {
                 }
             />
             <Route
-                path="/reset-password"
+                path="/instructor/my-courses"
+                element={
+                    <ProtectedRoute role="instructor">
+                        <Layout>
+                            <Courses />
+                        </Layout>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/instructor/courses/new"
+                element={
+                    <ProtectedRoute role="instructor">
+                        <Layout>
+                            <CourseForm />
+                        </Layout>
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route
+                path="/instructor/courses/:id"
+                element={
+                    <ProtectedRoute role="instructor">
+                        <Layout>
+                            <CourseForm />
+                        </Layout>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/courses"
                 element={
                     <ProtectedRoute>
                         <Layout>
-                            <ChangePassword />
+                            <BrowseCourses />
+                        </Layout>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/my-courses"
+                element={
+                    <ProtectedRoute role="student">
+                        <Layout>
+                            <BrowseCourses onlyEnrolled={true} />
+                        </Layout>
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route path="/quiz/:lessonId" element={<QuizPage />} />
+
+            {/* Instructor Quiz Management */}
+            <Route
+                path="/quiz"
+                element={
+                    <ProtectedRoute>
+                        <Layout>
+                            <CreateQuizPage />
+                        </Layout>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/view-quiz/:lessonId"
+                element={
+                    <ProtectedRoute>
+                        <Layout>
+                            <ViewQuizPage />
+                        </Layout>
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route
+                path="/profile"
+                element={
+                    <ProtectedRoute>
+                        <Layout>
+                            <Profile />
                         </Layout>
                     </ProtectedRoute>
                 }
@@ -63,9 +144,13 @@ function App() {
             <Route
                 path="/assistant"
                 element={
-                    <Layout>
-                        <VirtualAssistant context={{ page: "GeneralHelp" }} />
-                    </Layout>
+                    <ProtectedRoute>
+                        <Layout>
+                            <VirtualAssistant
+                                context={{ page: "GeneralHelp" }}
+                            />
+                        </Layout>
+                    </ProtectedRoute>
                 }
             />
         </Routes>

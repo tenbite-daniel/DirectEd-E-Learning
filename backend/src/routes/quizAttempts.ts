@@ -1,9 +1,9 @@
 import { Router } from "express";
 import {
-  submitQuizAttempt,
-  getQuizAttempts,
-} from "../../controllers/quizAttemptController";
-import { authMiddleware } from "../../middleware/auth.middleware";
+    submitQuizAttempt,
+    getQuizAttempts,
+} from "../controllers/quizAttemptController";
+import { authMiddleware } from "../middleware/auth.middleware";
 
 const router = Router();
 router.post("/", authMiddleware, submitQuizAttempt);

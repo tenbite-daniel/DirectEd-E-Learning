@@ -94,7 +94,7 @@ const QuizPage: React.FC = () => {
                         onClick={handleSubmit}
                         className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
                     >
-                        Submit Quiz
+                        Submit the Quiz
                     </button>
                 </>
             ) : (

@@ -1,26 +1,47 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
-export interface ICourse extends Document {
-  title: string;
-  description: string;
-  category: string;
-  instructor: mongoose.Types.ObjectId; // Reference to User
-  price: number;
-  thumbnail?: string;
-  createdAt: Date;
-  updatedAt: Date;
+export interface ILesson {
+    _id?: mongoose.Types.ObjectId;
+    title: string;
+    durationSeconds?: number;
+    videoUrl?: string;
+    order?: number;
 }
 
-const courseSchema = new Schema<ICourse>(
-  {
-    title: { type: String, required: true, trim: true },
-    description: { type: String, required: true },
-    category: { type: String, required: true },
-    instructor: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    price: { type: Number, default: 0 },
-    thumbnail: { type: String },
-  },
-  { timestamps: true }
+export interface ICourse extends Document {
+    title: string;
+    description?: string;
+    instructor: mongoose.Types.ObjectId;
+    price?: number;
+    published: boolean;
+    lessons: ILesson[];
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+const LessonSchema = new Schema<ILesson>({
+    title: { type: String, required: true },
+    durationSeconds: Number,
+    videoUrl: String,
+    order: Number,
+});
+
+const CourseSchema = new Schema<ICourse>(
+    {
+        title: { type: String, required: true },
+        description: String,
+        instructor: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
+        price: { type: Number, default: 0 },
+        published: { type: Boolean, default: false },
+        lessons: [LessonSchema],
+    },
+    { timestamps: true }
 );
 
-export default mongoose.model<ICourse>("Course", courseSchema);
+const Course = mongoose.model<ICourse>("Course", CourseSchema);
+
+export default Course;

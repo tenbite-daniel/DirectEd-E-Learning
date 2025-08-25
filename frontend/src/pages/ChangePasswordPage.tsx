@@ -69,7 +69,7 @@ export const ChangePassword: React.FC = () => {
                         type="submit"
                         className="w-full rounded-md bg-indigo-600 p-3 font-semibold text-white transition duration-200 ease-in-out hover:bg-indigo-700"
                     >
-                        Change Password
+                        Change the Password
                     </button>
                 </form>
 
