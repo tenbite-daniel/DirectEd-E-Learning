@@ -102,19 +102,33 @@ class ContentGenerator:
     @traceable(run_type="chain")
     def _quiz_generation_chain(self):
         prompt_template = PromptTemplate.from_template(
-            """
-            Create 5 multiple-choice questions (MCQs) about the given topic.  
-            Each must include:
-            - Question text  
-            - Four options (A, B, C, D)  
-            - The correct answer clearly labeled  
+        """
+        Create {n} multiple-choice questions (MCQs) about the topic below.  
+        
+        Return the result strictly as **valid JSON** matching this schema:
+        {{
+            "title": "<string>",
+            "topic": "<string>",
+            "level": "<string>",
+            "questions": [
+                {{
+                    "question": "<string>",
+                    "options": [
+                        {{"label": "A", "text": "<string>"}},
+                        {{"label": "B", "text": "<string>"}},
+                        {{"label": "C", "text": "<string>"}},
+                        {{"label": "D", "text": "<string>"}}
+                    ],
+                    "correct_label": "<A|B|C|D>",
+                    "explanation": "<string>"
+                }}
+            ]
+        }}
 
-            
-
-            Topic: {topic}  
-            Content: {content}  
-            """
-        )
+        Topic: {topic}  
+        Content: {content}  
+        """
+    )
         # Use ONLY the provided 'Content'.  
         #     If content lacks enough info, say: "Not enough information to create a quiz."
         return {
