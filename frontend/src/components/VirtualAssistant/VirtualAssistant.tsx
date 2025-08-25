@@ -109,7 +109,7 @@ export const VirtualAssistant: React.FC<{ context: ChatContext }> = () => {
     const fetchAssistantResponse = async (userMessage: string) => {
         setIsTyping(true);
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/assistant/chat", {
+            const response = await fetch(`${API_URL}/api/assistant/chat`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
