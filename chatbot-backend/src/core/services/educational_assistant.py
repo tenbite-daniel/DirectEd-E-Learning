@@ -4,10 +4,13 @@ from typing import List, Optional
 from pydantic import BaseModel, ValidationError, Field
 import random
 
+# LangChain Imports for the fix
+from langchain_core.runnables import RunnablePassthrough, RunnableParallel
+from langchain_core.prompts import PromptTemplate
+from langchain_core.output_parsers import StrOutputParser
 
-# ------------------------
-# Lightweight schemas (internal)
-# ------------------------
+
+# Lightweight schemas 
 class ContentType(str, Enum):
     flashcards = "flashcards"
     quiz = "quiz"
@@ -20,7 +23,7 @@ class Flashcard(BaseModel):
     level: Optional[str] = None
 
 class MCQOption(BaseModel):
-    label: str   # "A", "B", "C", "D"
+    label: str  # "A", "B", "C", "D"
     text: str
 
 class QuizQuestion(BaseModel):
@@ -56,7 +59,6 @@ class ContentResponse(BaseModel):
     practice_questions: Optional[List[PracticeQuestion]] = None
 
 
-
 # ------------------------
 # Errors
 # ------------------------
@@ -67,15 +69,12 @@ class ServiceError(Exception):
         self.message = message
         self.detail = detail or {}
 
-
 class ContentGenerationError(ServiceError):
     """Raised when content generation fails or input is invalid."""
     pass
 
 
-# ------------------------
 # ContentGenerator
-# ------------------------
 class ContentGenerator:
     """
     Deterministic content generator used by the chatbot.
@@ -89,6 +88,9 @@ class ContentGenerator:
         """
         self.llm = llm
         self.retriever = retriever
+        # NEW: Initialize the answer generation chain here
+        self.answer_chain = self._setup_answer_chain()
+        self.quiz_chain = self._setup_quiz_chain()
 
     # Public API
     def generate_flashcards(self, subject: str, n: int = 5, level: str | None = "beginner", notes: str | None = None) -> List[Flashcard]:
@@ -121,37 +123,65 @@ class ContentGenerator:
         except Exception as e:
             raise ContentGenerationError("Practice question generation failed", detail={"reason": str(e)}) from e
 
+    # MODIFIED: This function now uses the new LangChain Expression Language (LCEL) chain.
     def answer_generator(self, request_text: str) -> str:
         """
-        Short text answer generator.
-        - Uses retriever if available
-        - Uses LLM if available
-        - Falls back to a deterministic response otherwise
+        Generates a short, formatted answer using the LangChain expression chain.
+        This ensures the LLM always processes the retrieved content.
         """
-        # 1. Try retriever
-        if self.retriever is not None:
-            try:
-                docs = self.retriever.get_documents(request_text)
-                if docs:
-                    return docs
-            except Exception:
-                pass
+        if self.llm is None or self.retriever is None:
+            # Fallback deterministic text if LLM or retriever are not configured
+            return f"Sorry, I couldn’t generate an explanation for '{request_text}'."
 
-        # 2. Try LLM
-        if self.llm is not None:
-            try:
-                # For ChatGroq / LangChain, `invoke` is the modern method
-                response = self.llm.invoke(request_text)
-                if hasattr(response, "content"):
-                    return response.content
-                if isinstance(response, str):
-                    return response
-                return str(response)
-            except Exception as e:
-                return f"[LLM error: {e}]"
+        try:
+            # Invoke the pre-configured chain.
+            # It handles retrieval, prompting, and LLM invocation.
+            response = self.answer_chain.invoke(request_text)
+            return response
+        except Exception as e:
+            return f"[LLM or Chain error: {e}]"
 
-        # 3. Fallback deterministic text
-        return f"Sorry, I couldn’t generate an explanation for '{request_text}'."
+
+    # NEW: A dedicated method to set up the answer generation chain
+    def _setup_answer_chain(self):
+        if self.llm is None or self.retriever is None:
+            return None
+
+        prompt_template = PromptTemplate.from_template(
+            """
+            You are an AI tutor. 
+            
+            Question: {question}
+            Content: {content}
+
+            Guidelines:
+            - Start with a beginner-friendly explanation.   
+            - Add deeper insights only if needed.   
+            - Use bullet points or step-by-step lists.   
+            - Include one real-world example or analogy.   
+            - Be concise and motivating.   
+            - Keep answers between **50 and 150 words**.   
+            """
+        )
+
+        # The key change: The chain now combines the retriever and the LLM
+        # This structure ensures the retrieved content is always passed to the LLM
+        full_chain = (
+            {
+                "content": self.retriever,
+                "question": RunnablePassthrough()
+            }
+            | prompt_template
+            | self.llm
+            | StrOutputParser()
+        )
+        return full_chain
+
+    def _setup_quiz_chain(self):
+        # NOTE: This method is needed to ensure the quiz chain is also defined,
+        # but your existing implementation of `generate_quiz` does not use it.
+        # This is a placeholder for future-proofing your code.
+        return None
 
     # ------------------------
     # Internal deterministic helpers

@@ -1,4 +1,3 @@
-# Core langchain imports
 from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnableParallel, RunnablePassthrough, RunnableLambda
@@ -7,7 +6,7 @@ from langchain_core.runnables import RunnableParallel, RunnablePassthrough, Runn
 from langchain_groq import ChatGroq
 from langchain.memory import ConversationBufferMemory, ConversationSummaryBufferMemory
 
-# Retrivers
+# Retrievers
 from langchain_community.vectorstores import Chroma
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
@@ -78,32 +77,36 @@ class ContentGenerator:
         prompt_template = PromptTemplate.from_template(
             """
             You are an AI tutor. 
-           
+            
             Question: {question}
             Content: {content}
 
             Guidelines:
-            - Start with a beginner-friendly explanation.  
-            - Add deeper insights only if needed.  
-            - Use bullet points or step-by-step lists.  
-            - Include one real-world example or analogy.  
-            - Be concise and motivating.  
-            - Keep answers between **50 and 150 words**.  
+            - Start with a beginner-friendly explanation.   
+            - Add deeper insights only if needed.   
+            - Use bullet points or step-by-step lists.   
+            - Include one real-world example or analogy.   
+            - Be concise and motivating.   
+            - Keep answers between **50 and 150 words**.   
             """
         )
-        #  Use ONLY the provided 'Content' to form your answer. 
-        #     If the content does not contain the answer, say so.
 
-        return {
-            "question": RunnablePassthrough(),
-            "content": RunnableLambda(lambda x: x["question"]) | self.retriever
-        } | prompt_template | self.llm | StrOutputParser()
+        full_chain = (
+            {
+                "content": self.retriever,
+                "question": RunnablePassthrough()
+            }
+            | prompt_template
+            | self.llm
+            | StrOutputParser()
+        )
+        return full_chain
     
     @traceable(run_type="chain")
     def _quiz_generation_chain(self):
         prompt_template = PromptTemplate.from_template(
         """
-        Create {n} multiple-choice questions (MCQs) about the topic below.  
+        Create {n} multiple-choice questions (MCQs) about the topic below.  
         
         Return the result strictly as **valid JSON** matching this schema:
         {{
@@ -125,12 +128,10 @@ class ContentGenerator:
             ]
         }}
 
-        Topic: {topic}  
-        Content: {content}  
+        Topic: {topic}  
+        Content: {content}  
         """
-    )
-        # Use ONLY the provided 'Content'.  
-        #     If content lacks enough info, say: "Not enough information to create a quiz."
+        )
         return {
             "topic": RunnablePassthrough(),
             "content": RunnableLambda(lambda x: x["topic"]) | self.retriever
@@ -138,12 +139,11 @@ class ContentGenerator:
 
     @traceable(run_type="chain")
     def answer_generator(self, question: str) -> str:
-        return self.answer_chain.invoke({"question": question})
+        return self.answer_chain.invoke(question)
 
     @traceable(run_type="chain")
     def generate_quiz(self, topic: str) -> str:
-        return self.quiz_chain.invoke({"topic": topic})
-    
+        return self.quiz_chain.invoke({"topic": topic, "n": 5})
 
 class LearningAnalyzer:
     """
@@ -173,4 +173,4 @@ class LearningAnalyzer:
         print(f"\n--- Log for User ID: {user_id} on {topic} ({performance}) ---")
         print("Updated Student Profile:")
         print(profile)
-        print("-----------------------------------") 
+        print("-----------------------------------")
