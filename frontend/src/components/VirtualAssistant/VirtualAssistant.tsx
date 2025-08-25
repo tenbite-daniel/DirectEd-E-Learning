@@ -1,9 +1,87 @@
 import React, { useState, useEffect, useRef } from "react";
 import { type ChatMessage, type ChatContext } from "../../shared/chatTypes";
-import { MessageBubble } from "./MessageBubble";
-import { QuickActions } from "./QuickActions";
-import { TypingIndicator } from "./TypingIndicator";
+
 import chatbotIcon from "../../assets/chatbot.png";
+
+// Define the API endpoint for your FastAPI backend
+const API_URL = "https://directed-virtual-assistant.onrender.com";
+
+// -----------------------------------------------------------
+// Component Props and Definitions
+// -----------------------------------------------------------
+
+interface HeaderProps {
+    title: string;
+    icon: string;
+}
+
+const Header: React.FC<HeaderProps> = ({ title, icon }) => {
+    return (
+        <div className="flex items-center space-x-4 p-4 border-b border-gray-200">
+            <img src={icon} alt="icon" className="h-8 w-8" />
+            <h1 className="text-xl font-semibold text-gray-800">{title}</h1>
+        </div>
+    );
+};
+
+interface MessageBubbleProps {
+    message: ChatMessage;
+    isLast: boolean;
+}
+
+const MessageBubble: React.FC<MessageBubbleProps> = ({ message, isLast }) => {
+    const isAssistant = message.sender === "assistant";
+    const bubbleClasses = isAssistant
+        ? "bg-indigo-500 text-white rounded-br-2xl rounded-tr-2xl rounded-tl-2xl self-start"
+        : "bg-gray-200 text-gray-800 rounded-bl-2xl rounded-tl-2xl rounded-tr-2xl self-end";
+
+    return (
+        <div className={`flex flex-col mb-4 max-w-[80%] ${isAssistant ? "items-start" : "items-end"}`}>
+            <div className={`p-3 text-sm shadow-md ${bubbleClasses}`}>
+                {message.text}
+            </div>
+        </div>
+    );
+};
+
+interface QuickActionsProps {
+    onSelect: (actionText: string) => void;
+}
+
+const QuickActions: React.FC<QuickActionsProps> = ({ onSelect }) => {
+    const actions = [
+        "Explain LLMs",
+        "Give me a quiz on FastAPI",
+        "What is a vector store?",
+    ];
+    return (
+        <div className="flex flex-wrap gap-2">
+            {actions.map((action, index) => (
+                <button
+                    key={index}
+                    onClick={() => onSelect(action)}
+                    className="rounded-full bg-indigo-100 px-4 py-1 text-sm font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                >
+                    {action}
+                </button>
+            ))}
+        </div>
+    );
+};
+
+const TypingIndicator: React.FC = () => {
+    return (
+        <div className="flex items-center space-x-1 mb-4">
+            <div className="h-2 w-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '0s' }}></div>
+            <div className="h-2 w-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+            <div className="h-2 w-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+        </div>
+    );
+};
+
+// -----------------------------------------------------------
+// Main Virtual Assistant Component
+// -----------------------------------------------------------
 
 export const VirtualAssistant: React.FC<{ context: ChatContext }> = () => {
     const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -11,165 +89,123 @@ export const VirtualAssistant: React.FC<{ context: ChatContext }> = () => {
     const [isTyping, setIsTyping] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-    // Initialize with a welcome message
+    // Initialize with a welcome message on component mount
     useEffect(() => {
         const welcomeMessage: ChatMessage = {
             id: crypto.randomUUID(),
             sender: "assistant",
-            text: "Hello, I'm Bingo. How can i help you?",
+            text: "Hello, I'm DirectEd. How can I help you learn today?",
             timestamp: new Date().toISOString(),
         };
         setMessages([welcomeMessage]);
     }, []);
 
-    // Auto-scroll to bottom when new messages come in
+    // Auto-scroll to the bottom when a new message is added
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
-    // Simple mock responses based on input
-    const generateResponse = (userMessage: string): string => {
-        const lowerMessage = userMessage.toLowerCase();
-
-        if (
-            lowerMessage.includes("enroll") ||
-            lowerMessage.includes("course")
-        ) {
-            return "To enroll in a course, go to the course page and click the 'Enroll' button. You can browse available courses from the main dashboard.";
-        }
-        if (lowerMessage.includes("certificate")) {
-            return "Your certificates can be found in your profile section. Once you complete a course, the certificate will be automatically generated and available for download.";
-        }
-        if (
-            lowerMessage.includes("profile") ||
-            lowerMessage.includes("update")
-        ) {
-            return "To update your profile, click on your avatar in the top right corner and select 'Profile Settings'. You can update your personal information, preferences, and password there.";
-        }
-        if (
-            lowerMessage.includes("feature") ||
-            lowerMessage.includes("platform")
-        ) {
-            return "Our platform features include: video lessons, interactive quizzes, progress tracking, certificates, and this virtual assistant. You can access most features from the main navigation menu.";
-        }
-        if (lowerMessage.includes("help") || lowerMessage.includes("support")) {
-            return "I'm here to help! You can ask me about enrolling in courses, accessing certificates, updating your profile, or navigating the platform features.";
-        }
-        if (lowerMessage.includes("quiz")) {
-            return "Quizzes are available for each lesson. You can take them to test your knowledge and track your progress. Your quiz results are saved in your profile.";
-        }
-        if (lowerMessage.includes("video") || lowerMessage.includes("lesson")) {
-            return "Video lessons can be accessed from your enrolled courses. You can pause, rewind, and take notes while watching. Your progress is automatically saved.";
-        }
-        if (
-            lowerMessage.includes("draw") ||
-            lowerMessage.includes("button") ||
-            lowerMessage.includes("prototype") ||
-            lowerMessage.includes("dribbble")
-        ) {
-            return "For design and prototyping questions, I'd recommend checking out design resources like Figma, Sketch, or Adobe XD. You can also explore design inspiration on platforms like Dribbble and Behance!";
-        }
-
-        // Default response
-        return (
-            "I understand you're asking about: " +
-            userMessage +
-            ". While I'm still learning, you can use the quick actions above for common questions, or try asking about courses, certificates, profiles, or platform features!"
-        );
-    };
-
-    const handleSend = async (text: string) => {
-        if (!text.trim()) return;
-
-        const newMessage: ChatMessage = {
-            id: crypto.randomUUID(),
-            sender: "user",
-            text,
-            timestamp: new Date().toISOString(),
-        };
-
-        setMessages((prev) => [...prev, newMessage]);
-        setInput("");
+    // Function to send a message to the backend and get a response
+    const fetchAssistantResponse = async (userMessage: string) => {
         setIsTyping(true);
+        try {
+            const response = await fetch(`${API_URL}/api/assistant/chat`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    user_id: "your_user_id_here", 
+                    request_text: userMessage,
+                    is_instructor: false, 
+                }),
+            });
 
-        // Simulate typing delay
-        setTimeout(() => {
-            const responseText = generateResponse(text);
-            const assistantResponse: ChatMessage = {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            
+            const assistantMessage: ChatMessage = {
                 id: crypto.randomUUID(),
                 sender: "assistant",
-                text: responseText,
+                text: data.output, 
                 timestamp: new Date().toISOString(),
             };
-
-            setMessages((prev) => [...prev, assistantResponse]);
+            setMessages((prevMessages) => [...prevMessages, assistantMessage]);
+        } catch (error) {
+            console.error("Failed to fetch response:", error);
+            const errorMessage: ChatMessage = {
+                id: crypto.randomUUID(),
+                sender: "assistant",
+                text: "Sorry, I'm having trouble connecting right now. Please try again later.",
+                timestamp: new Date().toISOString(),
+            };
+            setMessages((prevMessages) => [...prevMessages, errorMessage]);
+        } finally {
             setIsTyping(false);
-        }, 1000 + Math.random() * 1000);
+        }
+    };
+
+    const handleSendMessage = async () => {
+        if (input.trim() === "") return;
+
+        const userMessage: ChatMessage = {
+            id: crypto.randomUUID(),
+            sender: "user",
+            text: input,
+            timestamp: new Date().toISOString(),
+        };
+        setMessages((prevMessages) => [...prevMessages, userMessage]);
+        setInput("");
+
+        await fetchAssistantResponse(input);
+    };
+
+    const handleQuickAction = (actionText: string) => {
+        setInput(actionText);
+        // It's better to call handleSendMessage directly here
+        // to send the message immediately after setting the input.
+        fetchAssistantResponse(actionText);
     };
 
     return (
-        <div className="">
-            <div className="flex flex-col h-full bg-white relative rounded-2xl overflow-hidden shadow-lg border border-amber-100 mt-20">
-                <div className="w-full bg-[linear-gradient(to_bottom,_#395241,_#80B892)] mb-10">
-                    <img
-                        src={chatbotIcon}
-                        alt="chatbot icon"
-                        className="w-48 mx-auto"
+        <div className="flex h-full flex-col bg-slate-50 shadow-lg sm:rounded-lg">
+            <Header title="DirectEd Assistant" icon={chatbotIcon} />
+
+            <div className="flex-1 overflow-y-auto p-4">
+                {messages.map((msg, index) => (
+                    <MessageBubble
+                        key={msg.id}
+                        message={msg}
+                        isLast={index === messages.length - 1}
                     />
+                ))}
+                {isTyping && <TypingIndicator />}
+                <div ref={messagesEndRef} />
+            </div>
 
-                    <p className="text-2xl font-semibold text-white text-center my-2">
-                        Hi User!
-                    </p>
-                </div>
-
-                {/* Messages Container */}
-                <div className="flex-1 overflow-y-auto px-6 pb-4 space-y-4">
-                    {messages.map((msg) => (
-                        <MessageBubble key={msg.id} msg={msg} />
-                    ))}
-
-                    {/* Typing indicator */}
-                    {isTyping && <TypingIndicator />}
-
-                    <div ref={messagesEndRef} />
-                </div>
-                {/* Quick Actions Header */}
-                <QuickActions onSelect={handleSend} />
-                {/* Input Area */}
-                <div className="sticky bottom-0 p-6 pt-4 bg-[#5D7163]">
-                    <div className="flex gap-3 items-end">
-                        <div className="flex-1 bg-white rounded-2xl border border-gray-300 px-4 py-3 focus-within:border-orange-400 focus-within:ring-2 focus-within:ring-orange-100">
-                            <input
-                                className="w-full outline-none text-gray-700 placeholder-gray-400"
-                                value={input}
-                                onChange={(e) => setInput(e.target.value)}
-                                placeholder="Write a message..."
-                                onKeyPress={(e) =>
-                                    e.key === "Enter" && handleSend(input)
-                                }
-                                disabled={isTyping}
-                            />
-                        </div>
-                        <button
-                            onClick={() => handleSend(input)}
-                            disabled={!input.trim() || isTyping}
-                            className="w-12 h-12 bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed rounded-full flex items-center justify-center font-bold text-blue-700 transition-colors shadow-lg"
-                        >
-                            <svg
-                                className="w-5 h-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                                />
-                            </svg>
-                        </button>
-                    </div>
+            <div className="border-t border-gray-200 p-4">
+                <QuickActions onSelect={handleQuickAction} />
+                <div className="mt-2 flex items-center">
+                    <input
+                        type="text"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        onKeyPress={(e) => {
+                            if (e.key === "Enter") handleSendMessage();
+                        }}
+                        placeholder="Type your question..."
+                        className="flex-1 rounded-l-md border border-gray-300 p-3 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    />
+                    <button
+                        onClick={handleSendMessage}
+                        className="rounded-r-md bg-indigo-600 px-6 py-3 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        disabled={isTyping || input.trim() === ""}
+                    >
+                        Send
+                    </button>
                 </div>
             </div>
         </div>
