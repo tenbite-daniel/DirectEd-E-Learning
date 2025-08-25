@@ -1,6 +1,4 @@
-import os
-import logging
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
@@ -8,126 +6,80 @@ from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 from langserve import add_routes
 from langchain.schema.runnable import RunnableLambda
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from typing import Dict, Any
 from dotenv import load_dotenv
+import os
 
 from .core.api.endpoints import router as api_router
 from .core.chatbot import run_educational_assistant
 from .core.components import LearningAnalyzer
 
-# Avoid pydantic validation issues during development
-os.environ['PYDANTIC_SKIP_VALIDATING_CORE_SCHEMAS'] = '1'
-
-# Load environment variables first
 load_dotenv()
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-# Set up LangSmith for tracing
+# Set up LangSmith environment variables
 os.environ["LANGSMITH_TRACING"] = "true"
 os.environ["LANGSMITH_ENDPOINT"] = "https://api.smith.langchain.com"
-os.environ["LANGSMITH_API_KEY"] = "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"
+os.environ["LANGSMITH_API_KEY"] = os.getenv("LANGSMITH_API_KEY")
 os.environ["LANGSMITH_PROJECT"] = "DirectEd"
 
-# Initialize rate limiting
+# Initialize rate limiter
 limiter = Limiter(key_func=get_remote_address, default_limits=["5/minute"])
 
-# Define input/output models for the API
-class AssistantInput(BaseModel):
-    request: str = Field(..., description="The user's request or question")
-    user_id: str = Field(default="anonymous", description="Unique identifier for the user")
-    is_instructor: bool = Field(default=False, description="Whether the user is an instructor")
-
+# Define Pydantic models for LangServe
 class AssistantOutput(BaseModel):
-    user_type: str = Field(..., description="Type of user (student/instructor)")
-    content_type: str = Field(..., description="Type of content generated")
-    output: Dict[str, Any] = Field(..., description="The assistant's response")
-    updated_profile: Dict[str, Any] = Field(default_factory=dict, description="Updated user profile")
+    user_type: str
+    content_type: str
+    output: Dict[str, Any]
+    updated_profile: Dict[str, Any]
 
-def educational_assistant_wrapper(input_data: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Wrapper function to handle input/output for the educational assistant.
-    Takes the raw input and formats it properly for our chatbot.
-    """
-    logger.info(f"Received input: {input_data}")
-    
-    try:
-        # Extract the parameters we need
-        if isinstance(input_data, dict):
-            request = input_data.get('request', '')
-            user_id = input_data.get('user_id', 'anonymous')
-            is_instructor = input_data.get('is_instructor', False)
-        else:
-            # Fallback if input is not a dict
-            request = str(input_data)
-            user_id = 'anonymous'
-            is_instructor = False
-        
-        logger.info(f"Processing request: {request} for user: {user_id}")
-        
-        # Call our main educational assistant function
-        result = run_educational_assistant(
-            request=request,
-            user_id=user_id,
-            analyzer=LearningAnalyzer(),
-            is_instructor=is_instructor
-        )
-        
-        # Make sure we return the result in the expected format
-        if isinstance(result, dict):
-            formatted_result = {
-                'user_type': result.get('user_type', 'Student'),
-                'content_type': result.get('content_type', 'TUTORING'),
-                'output': result.get('output', {}),
-                'updated_profile': result.get('updated_profile', {})
-            }
-        else:
-            # If something went wrong, wrap it properly
-            formatted_result = {
-                'user_type': 'Student',
-                'content_type': 'ERROR',
-                'output': {'text': str(result)},
-                'updated_profile': {}
-            }
-        
-        return formatted_result
-        
-    except Exception as e:
-        logger.error(f"Error in wrapper: {e}")
-        return {
-            'user_type': 'Student',
-            'content_type': 'ERROR',
-            'output': {'error': f"Sorry, I encountered an error: {str(e)}"},
-            'updated_profile': {}
-        }
+class AssistantInput(BaseModel):
+    request: str
+    user_id: str = "anonymous"
+    is_instructor: bool = False
+
+# Define Pydantic model for the custom chat endpoint
+class ChatRequest(BaseModel):
+    user_id: str
+    request_text: str
+    is_instructor: bool = False
 
 # Create the runnable chain for LangServe
-educational_chain = RunnableLambda(educational_assistant_wrapper)
+educational_chain = RunnableLambda(
+    lambda inp: run_educational_assistant(
+        request=inp['request'],
+        user_id=inp.get("user_id", "0"),
+        analyzer=LearningAnalyzer(),
+        is_instructor=inp.get("is_instructor", False)
+    )
+).with_types(
+    input_type=AssistantInput,
+    output_type=AssistantOutput
+)
 
-# Initialize FastAPI app
+# Initialize the main app instance
 app = FastAPI(
     title="DirectEd Educational API",
-    description="Backend API for the DirectEd e-learning platform",
+    description="Backend for the DirectEd educational platform.",
     version="1.0.0",
     docs_url="/swagger",
     redoc_url="/redoc"
 )
 
-# Add rate limiting middleware
+# Add middleware and exception handler
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 app.add_middleware(SlowAPIMiddleware)
 
-# Configure CORS for frontend access
 origins = [
     "https://direct-ed-e-learning.vercel.app",
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "*"  
 ]
 
 app.add_middleware(
@@ -138,115 +90,59 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-# Include our API routes
-app.include_router(api_router)
-
-@app.post("/test-assistant")
-async def test_assistant(message: str):
-    """Simple test endpoint to check if the assistant is working"""
+# Custom chat endpoint to match frontend expectations
+@app.post("/api/assistant/chat")
+async def chat_endpoint(request: ChatRequest):
     try:
-        result = educational_assistant_wrapper({
-            'request': message,
-            'user_id': 'test_user',
-            'is_instructor': False
-        })
-        return {"success": True, "result": result}
-    except Exception as e:
-        logger.error(f"Test endpoint error: {e}")
-        return {"success": False, "error": str(e)}
-
-@app.post("/chat")
-async def chat_endpoint(request: AssistantInput):
-    """
-    Main chat endpoint that returns formatted responses.
-    Makes the output more readable for the frontend.
-    """
-    try:
-        result = educational_assistant_wrapper({
-            'request': request.request,
-            'user_id': request.user_id,
-            'is_instructor': request.is_instructor
-        })
-        
-        output = result['output']
-        content_type = result['content_type']
-        
-        # Format quiz responses nicely
-        if content_type == 'QUIZ' and isinstance(output, dict):
-            formatted_response = f"## {output.get('title', 'Quiz')}\n\n"
-            formatted_response += f"**Topic:** {output.get('topic', 'N/A')}\n"
-            formatted_response += f"**Level:** {output.get('level', 'N/A')}\n\n"
-            
-            for i, q in enumerate(output.get('questions', []), 1):
-                formatted_response += f"### Question {i}\n"
-                formatted_response += f"{q.get('question', '')}\n\n"
-                for opt in q.get('options', []):
-                    formatted_response += f"**{opt.get('label')}**) {opt.get('text', '')}\n"
-                formatted_response += f"\n*Correct Answer: {q.get('correct_label', 'N/A')}*\n"
-                formatted_response += f"*Explanation: {q.get('explanation', 'N/A')}*\n\n"
-                formatted_response += "---\n\n"
-                
-            return {
-                "formatted_response": formatted_response,
-                "raw_data": result,
-                "content_type": content_type
-            }
-            
-        # Format tutoring responses nicely
-        elif content_type == 'TUTORING' and isinstance(output, dict):
-            text_content = output.get('text', str(output))
-            formatted_response = f"## Learning Content\n\n{text_content}"
-            
-            return {
-                "formatted_response": formatted_response,
-                "raw_data": result,
-                "content_type": content_type
-            }
-        
-        # Default formatting for other responses
-        return {
-            "formatted_response": str(output),
-            "raw_data": result,
-            "content_type": content_type
+        # Convert to the format expected by your educational_chain
+        chain_input = {
+            "request": request.request_text,
+            "user_id": request.user_id,
+            "is_instructor": request.is_instructor
         }
         
+        result = await educational_chain.ainvoke(chain_input)
+        
+        # Extract the text response from the result
+        response_text = ""
+        if isinstance(result, dict):
+            if "output" in result and isinstance(result["output"], dict):
+                response_text = result["output"].get("text", "")
+                if not response_text and "content" in result["output"]:
+                    response_text = str(result["output"]["content"])
+            elif "content" in result:
+                response_text = str(result["content"])
+            else:
+                response_text = str(result)
+        else:
+            response_text = str(result)
+        
+        # Return in the format your frontend expects
+        return {
+            "output": {
+                "text": response_text or "I'm sorry, I couldn't generate a response. Please try again."
+            },
+            "status": "success"
+        }
     except Exception as e:
-        logger.error(f"Chat endpoint error: {e}")
-        return {"error": str(e)}
+        print(f"Error in chat endpoint: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
-# Add LangServe routes for the playground interface
-add_routes(
-    app, 
-    educational_chain, 
-    path="/assistant",
-    input_type=AssistantInput,
-    output_type=AssistantOutput,
-    enable_feedback_endpoint=False,
-    enable_public_trace_link_endpoint=False
-)
+# Include the router from endpoints.py
+app.include_router(api_router)
 
-# Rebuild models to ensure proper validation
-AssistantInput.model_rebuild()
-AssistantOutput.model_rebuild()
+# Add LangServe routes
+add_routes(app, educational_chain, path="/assistant")
 
 @app.get("/")
 async def root():
     return {"message": "DirectEd API is running. Visit /docs or /assistant/playground"}
 
-@app.on_event("startup")
-async def startup_event():
-    """Test the system on startup to make sure everything works"""
-    logger.info("🚀 DirectEd API starting up...")
-    
-    # Run a quick test to make sure the assistant works
-    try:
-        test_result = educational_assistant_wrapper({
-            'request': 'Hello, this is a test',
-            'user_id': 'startup_test',
-            'is_instructor': False
-        })
-        logger.info(f"✅ Startup test successful")
-    except Exception as e:
-        logger.error(f"❌ Startup test failed: {e}")
-    
-    logger.info("🎯 API ready! Playground available at: http://127.0.0.1:8000/assistant/playground/")
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy", "message": "API is running"}
+
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
