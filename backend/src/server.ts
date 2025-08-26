@@ -24,7 +24,24 @@ const PORT = process.env.PORT || 3500;
 const MONGO_URI = process.env.MONGO_URI || "";
 
 // Middleware
-app.use(cors());
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://direct-ed-e-learning.vercel.app",
+];
+
+app.use(
+    cors({
+        origin: (origin, callback) => {
+            if (!origin) return callback(null, true);
+            if (allowedOrigins.includes(origin)) {
+                callback(null, true);
+            } else {
+                callback(new Error("Not allowed by CORS"));
+            }
+        },
+        credentials: true,
+    })
+);
 app.use(express.json());
 
 // Routes
