@@ -63,7 +63,7 @@ const StudentDashboard: React.FC = () => {
                 </div>
 
                 {/* Stats Cards */}
-                <div className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-4">
+                <div className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-3">
                     <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
                         <div className="flex items-center justify-between">
                             <div>
@@ -120,26 +120,6 @@ const StudentDashboard: React.FC = () => {
                             </div>
                             <div className="p-3 bg-purple-100 rounded-full dark:bg-purple-900/20">
                                 <Clock className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                                    {user?.role === "student"
-                                        ? "Streak"
-                                        : "Growth"}
-                                </h3>
-                                <p className="mt-1 text-2xl font-bold text-gray-900 dark:text-white">
-                                    {user?.role === "student"
-                                        ? "1 days"
-                                        : "+12%"}
-                                </p>
-                            </div>
-                            <div className="p-3 bg-orange-100 rounded-full dark:bg-orange-900/20">
-                                <TrendingUp className="w-6 h-6 text-orange-600 dark:text-orange-400" />
                             </div>
                         </div>
                     </div>
@@ -243,10 +223,34 @@ const StudentDashboard: React.FC = () => {
                             >
                                 <Award className="w-8 h-8 mb-2 text-blue-600 dark:text-blue-400" />
                                 <h3 className="font-medium text-gray-900 dark:text-white">
-                                    My Progress
+                                    My Courses
                                 </h3>
                                 <p className="text-sm text-gray-600 dark:text-gray-400">
                                     Track your learning journey
+                                </p>
+                            </button>
+                            <button
+                                onClick={() => navigate("/quiz")}
+                                className="p-4 text-left transition-colors rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                                <Award className="w-8 h-8 mb-2 text-blue-600 dark:text-blue-400" />
+                                <h3 className="font-medium text-gray-900 dark:text-white">
+                                    Take Quiz
+                                </h3>
+                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                    Assess your knowledge
+                                </p>
+                            </button>
+                            <button
+                                onClick={() => navigate("/assistant")}
+                                className="p-4 text-left transition-colors rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            >
+                                <Award className="w-8 h-8 mb-2 text-blue-600 dark:text-blue-400" />
+                                <h3 className="font-medium text-gray-900 dark:text-white">
+                                    AI Assistant
+                                </h3>
+                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                    Get help with your studies
                                 </p>
                             </button>
                         </div>
