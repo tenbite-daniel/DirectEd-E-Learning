@@ -7,7 +7,7 @@ from langchain_community.document_loaders import (
     TextLoader
 )
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_cohere import  CohereEmbeddings
 from dotenv import load_dotenv
 from pathlib import Path
 import os
@@ -50,41 +50,42 @@ resources_links = [
     "https://huggingface.co/blog/dvgodoy/fine-tuning-llm-hugging-face",
     "https://huggingface.co/learn/llm-course/en/chapter3/1",    
 ]
-# web_loader = WebBaseLoader(resources_links)
-# pdf_loaders = DirectoryLoader(
-#     str(knowledge_path),
-#     loader_cls=PDFPlumberLoader,
-#     glob="*.pdf"
-# )
-# text_loader = DirectoryLoader(
-#     str(knowledge_path),
-#     loader_cls=TextLoader,
-#     glob="*.txt"
-# )
+web_loader = WebBaseLoader(resources_links)
+pdf_loaders = DirectoryLoader(
+    str(knowledge_path),
+    loader_cls=PDFPlumberLoader,
+    glob="*.pdf"
+)
+text_loader = DirectoryLoader(
+    str(knowledge_path),
+    loader_cls=TextLoader,
+    glob="*.txt"
+)
 
-# web_data = web_loader.load()
-# pdf_data = pdf_loaders.load()
-# text_data = text_loader.load()
+web_data = web_loader.load()
+pdf_data = pdf_loaders.load()
+text_data = text_loader.load()
 
 # Embeddings
 
 persist_directory = database_path
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001",
-                                          google_api_key=GOOGLE_API_KEY)
-# text_splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=20)
-# pdf_chunks = text_splitter.split_documents(pdf_data)
-# web_chunks = text_splitter.split_documents(web_data)
-# text_chunks = text_splitter.split_documents(text_data)
+embeddings = CohereEmbeddings(
+    model="embed-english-v3.0",
+    cohere_api_key=os.getenv("COHERE_API_KEY")
+    )
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=20)
+pdf_chunks = text_splitter.split_documents(pdf_data)
+web_chunks = text_splitter.split_documents(web_data)
+text_chunks = text_splitter.split_documents(text_data)
 
-# all_chunks =pdf_chunks + web_chunks + text_chunks
+all_chunks =pdf_chunks + web_chunks + text_chunks
 
 # Populatint the database
-# vectordb = Chroma.from_documents(
-#     documents=all_chunks,
-#     embedding=embeddings,
-#     persist_directory=persist_directory
-# )
+vectordb = Chroma.from_documents(
+    documents=all_chunks,
+    embedding=embeddings,
+    persist_directory=persist_directory
+)
 
 
 vectordb = Chroma(persist_directory=persist_directory,

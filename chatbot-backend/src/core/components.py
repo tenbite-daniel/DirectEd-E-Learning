@@ -6,7 +6,7 @@ from langsmith import traceable
 import os
 from dotenv import load_dotenv
 from typing import Dict, Any
-from data_handlers import retriever
+from .data_handlers import retriever
 
 load_dotenv()
 
@@ -23,7 +23,7 @@ class EducationalRetriever:
 
 class ContentGenerator:
     # @traceable(run_type="chain")
-    def flashcard_generation(self, query: str, flashcard_length: int):
+    async def flashcard_generation(self, query: str, flashcard_length: int):
         flashcard_prompt_template = ChatPromptTemplate.from_template(
             """
             You are an intelligent flashcard generator for **DirectEd**, a learning platform focused on tech (web development, AI, design, and the developer industry).
@@ -53,14 +53,14 @@ class ContentGenerator:
             """
         )
         flashcardchain = flashcard_prompt_template | llm | StrOutputParser()
-        return flashcardchain.invoke(
+        return await flashcardchain.ainvoke(
             {"topic": query,
              "flashcard_length": flashcard_length,
              "content": EducationalRetriever().get_documents(query=query)}
         )
     
     # @traceable(run_type="chain")
-    def quiz_generation(self, query: str, quiz_length: int):
+    async def quiz_generation(self, query: str, quiz_length: int):
         quiz_prompt_template = ChatPromptTemplate.from_template(
             """
             Create a multiple-choice questions (MCQs)quiz of {quiz_length} questions about the given topic.  
@@ -78,14 +78,14 @@ class ContentGenerator:
         )
         quiz_chain = quiz_prompt_template | llm | StrOutputParser()
 
-        return quiz_chain.invoke({
+        return await quiz_chain.ainvoke({
             "topic": query,
             "quiz_length": quiz_length,
             "content": EducationalRetriever().get_documents(query=query)
             })
     
     # @traceable(run-"chain")
-    def assessment_generator(topic: str, learner_lvl: str):   
+    async def assessment_generator(self,topic: str, learner_lvl: str):   
         assessment_prompt_template = ChatPromptTemplate.from_template(
             """
             You are an **Academic Assessment Engine** for DirectEd, specializing in creating structured, high-quality, and fair examinations.
@@ -155,14 +155,14 @@ class ContentGenerator:
                 *Do not display or discuss this JSON data unless explicitly requested. When requested, then provided the answer in a well formatted, professional way*
             """)
         assessment_chain = assessment_prompt_template | llm | StrOutputParser()
-        assessment_chain.invoke({
+        return await assessment_chain.ainvoke({
             "difficulty_lvl": learner_lvl,
             "topic": topic
         })
         
 class AdaptiveConversationChain:
         # @traceable(run_type="chain")
-        def answer_generation(self, query: str):
+        async def answer_generation(self, query: str):
             answer_prompt_template = ChatPromptTemplate.from_template(
             """
             You are an **AI Tutor** for DirectEd, a tech learning platform.
@@ -184,7 +184,7 @@ class AdaptiveConversationChain:
             """
 )
             answer_chain = answer_prompt_template | llm | StrOutputParser()
-            return answer_chain.invoke({
+            return await answer_chain.ainvoke({
                 "question": query,
                 "content": EducationalRetriever().get_documents(query=query)
                 } )
