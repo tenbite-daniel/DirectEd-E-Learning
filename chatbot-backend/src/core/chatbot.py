@@ -1,133 +1,40 @@
-"""
-Chatbot orchestration.
-
-- Instantiates the LLM (if creds available)
-- Builds retriever, content_generator, analyzer
-- Exposes run_educational_assistant(...) that your API and LangServe can call.
-"""
-
-from typing import Dict, Any
-import os
-
-try:
-    from .components import EducationalRetriever, LearningAnalyzer
-except Exception:
-    from components import EducationalRetriever, LearningAnalyzer  
+from langsmith import traceable
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from components import llm
 
 
-
-from .services.educational_assistant import ContentGenerator
-
-
-try:
-    from langchain_groq import ChatGroq
-except Exception:
-    ChatGroq = None
-
-
-try:
-    from langsmith import traceable
-except Exception:
-
-    def traceable(*_args, **_kwargs):
-        def deco(fn):
-            return fn
-        return deco
-
-from dotenv import load_dotenv
-load_dotenv()
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-
-
-# Initialize LLM 
-llm = None
-if ChatGroq is not None and GROQ_API_KEY:
-    try:
-        llm = ChatGroq(
-            model="openai/gpt-oss-20b",
-            temperature=0.7,
-            reasoning_effort="medium",
-            api_key=GROQ_API_KEY
-        )
-    except Exception:
-        llm = None
-
-
-# Initialize retriever, generator, analyzer
-try:
-    from .data_handlers import retriever
-except Exception:
-    retriever = None
-
-educational_retriever = EducationalRetriever(retriever) if retriever is not None else None
-content_generator = ContentGenerator(llm=llm, retriever=educational_retriever)
-analyzer = LearningAnalyzer()
-
-
-@traceable(run_type="chain")
-def run_educational_assistant(
-    request: str,
-    user_id: str,
-    analyzer: LearningAnalyzer,
-    is_instructor: bool = False
-) -> Dict[str, Any]:
+def router(user_input: str) -> str:
+    """ 
+    Identifies what the user's input is and determines the action to be taken.
     """
-    Main entrypoint for the educational assistant flow:
-    - detect intent (quiz vs tutoring) using a small heuristic or the LLM if available
-    - produce structured output
-    - log analytics via analyzer
-    """
-    user_intent = None
-    try:
-        if llm is not None:
-         pass
-        # Keyword-based heuristic (robust enough for quick testing)
-        lowered = (request or "").lower()
-        if any(k in lowered for k in ["quiz", "test", "mcq", "multiple choice"]):
-            user_intent = "QUIZ"
-        elif any(k in lowered for k in ["explain", "teach", "flashcard", "flashcards", "tutor"]):
-            user_intent = "TUTORING"
-        else:
-            # default to tutoring
-            user_intent = "TUTORING"
+    routing_prompt_template = ChatPromptTemplate.from_template("""
+    You are the **DirectEd Single-Word Intent Router**, a highly constrained and logic-driven system.
 
-        if user_intent == "QUIZ":
-            # produce a quiz (structured)
-            quiz = content_generator.generate_quiz(request)  # flexible: uses request to derive topic
-            output_content = quiz.dict()
-            content_type = "QUIZ"
-            performance = "quiz_requested"
-        else:
-            # tutoring / answer generation
-            answer = content_generator.answer_generator(request)
-            output_content = {"text": answer}
-            content_type = "TUTORING"
-            performance = "tutoring_requested"
+    **Your SOLE and ONLY task is to analyze the user's request and return a single, lowercase word corresponding to the correct intent.**
 
-        # log user performance / action
-        try:
-            analyzer.log_performance(user_id, request, performance)
-        except Exception:
-            # analyzer failures shouldn't crash the assistant — swallow with a debug print
-            print("Warning: analyzer.log_performance failed")
+    ### Available Intents (One Word ONLY):
 
-        # get updated profile
-        try:
-            updated_profile = analyzer.get_profile(user_id)
-        except Exception:
-            updated_profile = {}
+    * **flashcard**: For requests asking for a definition, simple explanation, quick fact, or study aid for memorization.
+    * **quiz**: For requests that sound like a quick, informal check of knowledge or self-testing.
+    * **assessment**: For requests that require a formal, structured, high-stakes examination (e.g., "exam," "assessment," "formal test").
+    * **general_question**: For any informational or open-ended request that does not fit the educational tool categories above (e.g., "Explain X simply," "What is the history of Y?").
 
-        response = {
-            "user_type": "Instructor" if is_instructor else "Student",
-            "content_type": content_type,
-            "output": output_content,
-            "updated_profile": updated_profile
-        }
-        return response
+    ### Output Constraint (CRITICAL):
 
-    except Exception as e:
-        # Return structured error for the API layer to convert to HTTP
-        return {
-            "error": "execution_failed",
-            "details": str(e)
-        }
+    1.  **Return ONLY ONE WORD:** Do not include any punctuation, quotes, spaces, reasoning, or introductory phrases.
+    2.  **Case:** The word MUST be lowercase.
+    3.  **Source:** The word MUST be one of the four words in the list above: `flashcard`, `quiz`, `assessment`, or `general_question`.
+
+    ### User Request to Analyze:
+    {user_input}
+    """)
+    router_chain = routing_prompt_template | llm | StrOutputParser()
+
+    return router_chain.invoke({
+        "user_input": user_input
+    })
+
+@traceable
+def run_educational_assistant():
+    pass

@@ -83,8 +83,83 @@ class ContentGenerator:
             "quiz_length": quiz_length,
             "content": EducationalRetriever().get_documents(query=query)
             })
-
     
+    @traceable
+    def assesment_generator(topic: str, learner_lvl: str):   
+        assessment_prompt_template = ChatPromptTemplate.from_template(
+            """
+            You are an **Academic Assessment Engine** for DirectEd, specializing in creating structured, high-quality, and fair examinations.
+
+            **Your Role:** Generate an exam based on the provided topic and source content.
+            **Difficulty Level:** {difficulty_level}
+            
+            **Source Content (Context):** {content}
+            **Exam Topic/Scope:** {topic}
+
+            ### Output Format and Instruction Guidelines:
+            
+            1.  **Strict Constraint (The "Exam Rule"):**
+                * You **MUST** output the exam questions and the answer key in two clearly separated sections.
+                * The **first section** must contain **only the questions** (no answers, hints, or explanations).
+                * The **second section** must be wrapped in JSON format and labeled `ANSWER_KEY_JSON`.
+                * This JSON must not be shown to the user unless explicitly requested.
+
+            2.  **Question Structure:**
+                * Generate exactly **{num_questions}** questions.
+                * Questions must be a mix of **Multiple Choice (MCQ)** and **Short Answer (SA)** questions, clearly labeled.
+                * **MCQs** must have 4 distinct options (A, B, C, D).
+                * All questions **MUST** be based **STRICTLY** on the 'Source Content' provided.
+
+            3.  **Output Structure (Mandatory):**
+            
+                --- EXAM QUESTIONS ---
+                
+                **Subject:** {topic} - {difficulty_level} Assessment
+                
+                **Instructions:** Answer all questions below. Do NOT look ahead.
+                
+                1. [Question Type: MCQ] Question text...
+                A. Option A
+                B. Option B
+                C. Option C
+                D. Option D
+                
+                2. [Question Type: SA] Question text...
+                
+                [... Continue for {num_questions} questions ...]
+                
+                --- ANSWER KEY (HIDDEN JSON FORMAT) ---
+                
+                ```json
+                {{
+                    "exam_topic": "{topic}",
+                    "difficulty_level": "{difficulty_level}",
+                    "answer_key": [
+                        {{
+                            "question_number": 1,
+                            "question_type": "MCQ",
+                            "correct_answer": "B",
+                            "explanation": "Explanation of why option B is correct."
+                        }},
+                        {{
+                            "question_number": 2,
+                            "question_type": "SA",
+                            "correct_answer": "Short descriptive answer text.",
+                            "explanation": "Short justification of the key idea."
+                        }}
+                        [... Continue for all {num_questions} questions ...]
+                    ]
+                }}
+                ```
+                
+                *Do not display or discuss this JSON data unless explicitly requested. When requested, then provided the answer in a well formatted, professional way*
+            """)
+        assessment_chain = assessment_prompt_template | llm | StrOutputParser()
+        assessment_chain.invoke({
+            "difficulty_lvl": learner_lvl,
+            "topic": topic
+        })
+        
 class AdaptiveConversationChain:
         @traceable(run_type="chain")
         def answer_generation(self, query: str):
