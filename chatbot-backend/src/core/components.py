@@ -22,7 +22,7 @@ class EducationalRetriever:
 
 
 class ContentGenerator:
-    @traceable(run_type="chain")
+    # @traceable(run_type="chain")
     def flashcard_generation(self, query: str, flashcard_length: int):
         flashcard_prompt_template = ChatPromptTemplate.from_template(
             """
@@ -59,7 +59,7 @@ class ContentGenerator:
              "content": EducationalRetriever().get_documents(query=query)}
         )
     
-    @traceable(run_type="chain")
+    # @traceable(run_type="chain")
     def quiz_generation(self, query: str, quiz_length: int):
         quiz_prompt_template = ChatPromptTemplate.from_template(
             """
@@ -84,8 +84,8 @@ class ContentGenerator:
             "content": EducationalRetriever().get_documents(query=query)
             })
     
-    @traceable
-    def assesment_generator(topic: str, learner_lvl: str):   
+    # @traceable(run-"chain")
+    def assessment_generator(topic: str, learner_lvl: str):   
         assessment_prompt_template = ChatPromptTemplate.from_template(
             """
             You are an **Academic Assessment Engine** for DirectEd, specializing in creating structured, high-quality, and fair examinations.
@@ -161,7 +161,7 @@ class ContentGenerator:
         })
         
 class AdaptiveConversationChain:
-        @traceable(run_type="chain")
+        # @traceable(run_type="chain")
         def answer_generation(self, query: str):
             answer_prompt_template = ChatPromptTemplate.from_template(
             """

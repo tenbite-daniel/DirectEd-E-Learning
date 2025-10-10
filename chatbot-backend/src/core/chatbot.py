@@ -1,10 +1,12 @@
 from langsmith import traceable
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-from components import llm
+from components import llm, AdaptiveConversationChain, ContentGenerator
 
+adaptive_conversation = AdaptiveConversationChain()
+content_generator = ContentGenerator()
 
-def router(user_input: str) -> str:
+async def router(user_input: str) -> str:
     """ 
     Identifies what the user's input is and determines the action to be taken.
     """
@@ -30,11 +32,23 @@ def router(user_input: str) -> str:
     {user_input}
     """)
     router_chain = routing_prompt_template | llm | StrOutputParser()
-
-    return router_chain.invoke({
+    decision = await router_chain.invoke({
         "user_input": user_input
     })
 
+    return decision.strip().lower()
+
 @traceable
-def run_educational_assistant():
-    pass
+async def run_educational_assistant(query):
+    router_answer = await router(user_input=query)
+    if router_answer == "general_question":
+        adaptive_conversation.answer_generation(query,)
+    elif router_answer == "flashcard":
+        content_generator.flashcard_generation()
+    elif router_answer == "quiz":
+        content_generator.quiz_generation()
+    elif router_answer == "assessment":
+        content_generator.assessment_generator()
+    else:
+        adaptive_conversation.answer_generation()
+
