@@ -1,14 +1,11 @@
-# Core langchain imports
-from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnableParallel, RunnablePassthrough, RunnableLambda
 from langchain_groq import ChatGroq
 from langchain.memory import ConversationBufferMemory, ConversationSummaryBufferMemory
-# Langsmith
 from langsmith import traceable
 import os
 from dotenv import load_dotenv
-from typing import Dict, Any, List
+from typing import Dict, Any
 from data_handlers import retriever
 
 load_dotenv()
@@ -26,33 +23,45 @@ class EducationalRetriever:
 
 class ContentGenerator:
     @traceable(run_type="chain")
-    def answer_generation(self, query: str):
-        answer_prompt_template = ChatPromptTemplate.from_template(
+    def flashcard_generation(self, query: str, flashcard_length: int):
+        flashcard_prompt_template = ChatPromptTemplate.from_template(
             """
-            You are an AI tutor. 
-           
-            Question: {question}
-            Content: {content}
+            You are an intelligent flashcard generator for **DirectEd**, a learning platform focused on tech (web development, AI, design, and the developer industry).
 
-            Guidelines:
-            - Start with a beginner-friendly explanation.  
-            - Add deeper insights only if needed.  
-            - Use bullet points or step-by-step lists.  
-            - Include one real-world example or analogy.  
-            - Be concise and motivating.  
-            - Keep answers between **50 and 150 words**.  
+            Your task is to create a set of **5-7 flashcards** based on the provided content and topic.
+
+            **Topic:** {topic}
+            **Content:** {content}
+
+            ### Output Format Guidelines:
+            1.  **Strictly use Markdown** for formatting.
+            2.  Each flashcard must be clearly separated by a horizontal rule (`---`).
+            3.  A flashcard must consist of exactly two parts: a **Front** (Question/Term) and a **Back** (Answer/Definition).
+            4.  The output must follow this precise structure for every card:
+
+            **<Front>**
+            * **Term/Question (Maximum 10 words):** [Term or Question related to the topic]
+            * **Context:** [A concise clue or category for the question/term]
+
+            **<Back>**
+            * **Definition/Answer (Maximum 4 sentences):** [The key definition or answer]
+            * **Keyword Association:** [1-2 critical, easy-to-recall keywords]
+            * **Why It Matters:** [1 sentence explaining its real-world relevance in tech]
+
+            ---
+            (Start Flashcard Generation Here)
             """
         )
-        answer_chain = answer_prompt_template | llm | StrOutputParser()
-        return answer_chain.invoke({
-            "question": query,
-            "content": EducationalRetriever.get_documents(query=query)
-            } )
-    
+        flashcardchain = flashcard_prompt_template | llm | StrOutputParser()
+        return flashcardchain.invoke(
+            {"topic": query,
+             "flashcard_length": flashcard_length,
+             "content": EducationalRetriever().get_documents(query=query)}
+        )
     
     @traceable(run_type="chain")
     def quiz_generation(self, query: str, quiz_length: int):
-        quiz_prompt_template = PromptTemplate.from_template(
+        quiz_prompt_template = ChatPromptTemplate.from_template(
             """
             Create a multiple-choice questions (MCQs)quiz of {quiz_length} questions about the given topic.  
             Each must include:
@@ -71,37 +80,40 @@ class ContentGenerator:
 
         return quiz_chain.invoke({
             "topic": query,
+            "quiz_length": quiz_length,
             "content": EducationalRetriever().get_documents(query=query)
             })
 
     
 class AdaptiveConversationChain:
-    def __init__(self, llm_model):
-        self.llm = llm_model
-        # Using ConversationalSummaryBufferMemory to manage long-term context
-        self.memory = ConversationSummaryBufferMemory(llm=self.llm, max_token_limit=1000)
+        @traceable(run_type="chain")
+        def answer_generation(self, query: str):
+            answer_prompt_template = ChatPromptTemplate.from_template(
+            """
+            You are an **AI Tutor** for DirectEd, a tech learning platform.
 
-    def get_chain(self):
-        """
-        Creates and returns the conversational chain. The prompt is designed to
-        receive history, context, and the user's question as direct inputs.
-        """
-        prompt_template = ChatPromptTemplate.from_messages([
-            ("system", 
-             """You are DirectEd, a friendly and knowledgeable AI tutor. 
-             Use the following educational context to answer the student's question. 
-             If you don't know the answer, politely say so. Keep your response concise and encouraging.
-             
-             Context: {context}
-             
-             Conversation History:
-             {history}
-             """),
-            ("user", "{question}")
-        ])
+            **Your Role:** Personalize the explanation based on the user's level, using both provided content and your general knowledge.
+            **Learner Persona:** {persona}
         
-        chain = prompt_template | self.llm | StrOutputParser()
-        return chain
+            **Source Content:** {content}
+            **User Question:** {question}
+
+            ### Explanation Guidelines:
+            - **Knowledge Base:** Prioritize information from the **'Source Content'** when relevant. If the source content is insufficient or a concept is better explained using general knowledge, supplement or answer using your **internal expertise**.
+            - **Personalization:** Tailor the **tone, vocabulary, and complexity** to the '{persona}' (e.g., if the persona is 'Beginner', keep it very simple).
+            - **Structure:**
+                - Start with a concise, beginner-friendly summary.
+                - Use **bullet points or step-by-step lists** for clarity.
+                - Include one relevant real-world analogy or example suitable for the persona.
+            - **Motivation & Concision:** Be encouraging and keep the explanation between **75 and 150 words** if it requires in-depth explanation. Otherwise keep it between **50 and 100 words**.
+            """
+)
+            answer_chain = answer_prompt_template | llm | StrOutputParser()
+            return answer_chain.invoke({
+                "question": query,
+                "content": EducationalRetriever().get_documents(query=query)
+                } )
+    
 
 class LearningAnalyzer:
     """
