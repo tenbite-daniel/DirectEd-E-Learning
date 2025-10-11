@@ -186,7 +186,8 @@ class AdaptiveConversationChain:
             answer_chain = answer_prompt_template | llm | StrOutputParser()
             return await answer_chain.ainvoke({
                 "question": query,
-                "content": EducationalRetriever().get_documents(query=query)
+                "content": EducationalRetriever().get_documents(query=query),
+                "persona": "Beginner"
                 } )
     
 
