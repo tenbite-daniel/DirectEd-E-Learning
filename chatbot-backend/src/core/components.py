@@ -17,7 +17,7 @@ llm = ChatGroq(
 
 class EducationalRetriever:
     def get_documents(self,query: str) ->str:
-        docs = retriever.get_relevant_documents(query)
+        docs = retriever.invoke(query)
         return "\n\n".join([doc.page_content for doc in docs])
 
 
@@ -50,6 +50,17 @@ class ContentGenerator:
 
             ---
             (Start Flashcard Generation Here)
+            ### Final Output Constraint: (CRITICAL)
+            **YOUR ENTIRE RESPONSE MUST BE A SINGLE, VALID JSON OBJECT.**
+            Do NOT include any introduction, explanations, markdown outside the value field, or commentary.
+            
+            IT IS A MUST YOU return a JSON output with the following format:
+            {{
+            "subject": "This will be the title of the output. For example: 'Web development flashcard'",
+            "output": "This will contain the actual flashcards/generated content"
+            }} 
+            Output ONLY valid JSON, with all keys and string values wrapped in double quotes (").
+
             """
         )
         flashcardchain = flashcard_prompt_template | llm | StrOutputParser()
@@ -63,17 +74,32 @@ class ContentGenerator:
     async def quiz_generation(self, query: str, quiz_length: int):
         quiz_prompt_template = ChatPromptTemplate.from_template(
             """
-            Create a multiple-choice questions (MCQs)quiz of {quiz_length} questions about the given topic.  
-            Each must include:
-            - Question text  
-            - Four options (A, B, C, D)  
-            - Then ask the user for the answers in the following format:
-                1. Answer
-                2. Answer
-                3. Answer.... 
+            You are a **Quiz Generator** for DirectEd.
 
-            Topic: {topic}  
-            Content: {content}  
+            **Topic:** {topic}  
+            **Content:** {content}
+            
+            ### Task:
+            Generate a multiple-choice questions (MCQs) quiz of exactly {quiz_length} questions based **ONLY** on the provided content.
+
+            ### Quiz Format (The 'output' field):
+            1. Each question must include the Question text and four options (A, B, C, D).
+            2. After all questions, provide the correct answers clearly in the format: 
+               1. Answer
+               2. Answer
+               3. Answer
+            
+            ### Final Output Constraint: (CRITICAL)
+            **YOUR ENTIRE RESPONSE MUST BE A SINGLE, VALID JSON OBJECT.**
+            Do NOT include any introduction, explanations, markdown outside the value field, or commentary.
+            
+            **JSON Format:**
+            {{
+            "subject": "This will be the title of the quiz (e.g., 'Web Development Quiz')",
+            "output": "The entire, formatted quiz content (questions, options, and answer list) goes here as a single string."
+            }} 
+            Output ONLY valid JSON, with all keys and string values wrapped in double quotes (").
+
             """
         )
         quiz_chain = quiz_prompt_template | llm | StrOutputParser()
@@ -85,7 +111,7 @@ class ContentGenerator:
             })
     
     # @traceable(run-"chain")
-    async def assessment_generator(self,topic: str, learner_lvl: str):   
+    async def assessment_generator(self,topic: str, learner_lvl: str, content_lenth: int):   
         assessment_prompt_template = ChatPromptTemplate.from_template(
             """
             You are an **Academic Assessment Engine** for DirectEd, specializing in creating structured, high-quality, and fair examinations.
@@ -153,11 +179,25 @@ class ContentGenerator:
                 ```
                 
                 *Do not display or discuss this JSON data unless explicitly requested. When requested, then provided the answer in a well formatted, professional way*
-            """)
+
+        ### Final Output Constraint: (CRITICAL)
+        **YOUR ENTIRE RESPONSE MUST BE A SINGLE, VALID JSON OBJECT.**
+        Do NOT include any text, headers, or commentary outside this final JSON structure.
+        
+        ALSO INCLUDE THE FOLLOWING IN THE GENERATED OUTPUT
+        {{
+        "subject": "This will be the title of the output. For example: 'Web development Assessment'",
+        "output": "This will contain the actual generated content, including the EXAM QUESTIONS and the ANSWER KEY (JSON) embedded within it."
+        }}
+        Output ONLY valid JSON, with all keys and string values wrapped in double quotes (").
+
+        """)
         assessment_chain = assessment_prompt_template | llm | StrOutputParser()
         return await assessment_chain.ainvoke({
-            "difficulty_lvl": learner_lvl,
-            "topic": topic
+            "difficulty_level": learner_lvl,
+            "topic": topic,
+            "num_questions": content_lenth,
+            "content" : EducationalRetriever().get_documents(query=topic)
         })
         
 class AdaptiveConversationChain:

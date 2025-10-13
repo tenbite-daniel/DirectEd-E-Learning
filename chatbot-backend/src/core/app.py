@@ -3,9 +3,11 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from .components import llm, AdaptiveConversationChain, ContentGenerator
 from typing import Dict
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from .chat_models import ChatRequest, ChatResponse, ContentGenerateRequest
+from .chat_models import ChatRequest, ChatResponse, ContentGenerateRequest, ContentGenerateResponse
+import json, ast
+import re
 
 
 app = FastAPI(
@@ -49,16 +51,16 @@ async def router(user_input: str) -> str:
 
     return decision.strip().lower()
 
-async def run_educational_assistant(query: str, quiz_length: int = 5, flashcard_length: int = 5, learner_lvl: str = "Beginner"):
+async def run_educational_assistant(query: str, content_length: int = 5, learner_lvl: str = "Beginner",content_type: str="quiz"):
     router_answer = await router(user_input=query)
     if router_answer == "general_question":
         output = await adaptive_conversation.answer_generation(query)
     elif router_answer == "flashcard":
-        output = await content_generator.flashcard_generation(query=query, flashcard_length=flashcard_length)
+        output = await content_generator.flashcard_generation(query=query, flashcard_length=content_length)
     elif router_answer == "quiz":
-        output = await content_generator.quiz_generation(query=query, quiz_length=quiz_length)
+        output = await content_generator.quiz_generation(query=query, quiz_length=content_length)
     elif router_answer == "assessment":
-        output = await content_generator.assessment_generator(topic=query, learner_lvl=learner_lvl)
+        output = await content_generator.assessment_generator(topic=query, learner_lvl=learner_lvl, content_lenth=content_length)
     else:
         output = await adaptive_conversation.answer_generation(query=query)
     return output
@@ -86,4 +88,6 @@ async def main_chat(request: ChatRequest):
 
 @app.post("/assistant/content/generate")
 async def content_generation(content: ContentGenerateRequest):
-    pass
+    generated_content = await run_educational_assistant(query=content.subject,content_length=content.content_length,learner_lvl=content.learner_level,content_type=content.request_type)
+
+    return generated_content
